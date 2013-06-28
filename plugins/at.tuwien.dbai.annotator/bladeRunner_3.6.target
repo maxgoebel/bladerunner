@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.6"?><target name="bladeRunner_3.6">
+<locations>
+<location includeAllPlatforms="false" includeMode="planner" type="InstallableUnit">
+<unit id="org.mozilla.xpcom.feature.feature.group" version="1.9.1.0_v20090825-1855-27801aw311A193502411"/>
+<unit id="org.mozilla.xulrunner.feature.feature.group" version="1.9.1.0_v20090825-1855-57Z379OhF77g7cFR37gN7"/>
+<repository location="http://downloads.zend.com/atf/"/>
+</location>
+<location path="/home/max/dev/tools/eclipse3_6" type="Profile"/>
+<location path="/home/max/dev/tools/eclipse3_6/deltapack" type="Directory"/>
+</locations>
+</target>

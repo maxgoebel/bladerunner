@@ -1,0 +1,67 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>DOM Inspector Menu Action</title>
+<style>@import url("file:/D:/e-330/eclipse/plugins/org.eclipse.sdk_3.3.0.v20070613/book.css");</style>
+<style>@import url("file:/D:/e-330/eclipse/configuration/org.eclipse.osgi/bundles/142/1/.cp/schema.css");</style>
+</HEAD>
+<BODY>
+<H1><CENTER>DOM Inspector Menu Action</CENTER></H1>
+<p></p>
+<h6 class=CaptionFigColumn id=header>Identifier: </h6>org.eclipse.atf.mozilla.ide.ui.action<p></p>
+<h6 class=CaptionFigColumn id=header>Since: </h6>1.0
+<p></p>
+
+<p>
+<h6 class=CaptionFigColumn id=header>Description: </h6>This extension point allows action to be contributed to the context menu of the DOM Inspector when a DOM node is right-clicked from the view.</p>
+<p><h6 class=CaptionFigColumn id=header>Configuration Markup:</h6></p>
+<p class=code id=dtd>&lt;!ELEMENT <a name="e.extension">extension</a> (<a href="#e.action">action</a>)&gt;</p>
+<p class=code id=dtd>&lt;!ATTLIST extension</p>
+<p class=code id=dtdAttlist>point&nbsp;CDATA #REQUIRED<p class=code id=dtdAttlist>id&nbsp;&nbsp;&nbsp;&nbsp;CDATA #IMPLIED<p class=code id=dtdAttlist>name&nbsp;&nbsp;CDATA #IMPLIED&gt;</p>
+<p></p>
+<ul class=ConfigMarkup id=attlistDesc>
+</ul>
+<br><p class=code id=dtd>&lt;!ELEMENT <a name="e.action">action</a> EMPTY&gt;</p>
+<p class=code id=dtd>&lt;!ATTLIST action</p>
+<p class=code id=dtdAttlist>class&nbsp;CDATA #REQUIRED<p class=code id=dtdAttlist>icon&nbsp;&nbsp;CDATA #REQUIRED<p class=code id=dtdAttlist>text&nbsp;&nbsp;CDATA #REQUIRED<p class=code id=dtdAttlist>types&nbsp;CDATA #IMPLIED<p class=code id=dtdAttlist>path&nbsp;&nbsp;CDATA #IMPLIED&gt;</p>
+<p></p>
+<ul class=ConfigMarkup id=attlistDesc>
+<li><b>class</b> - </li>
+<li><b>icon</b> - </li>
+<li><b>text</b> - </li>
+<li><b>types</b> - </li>
+<li><b>path</b> - </li>
+</ul>
+<br><h6 class=CaptionFigColumn id=header>Examples: </h6><pre>
+<p class=code id=tag>&lt;extension
+     point=<p class=code id=cstring>&quot;org.eclipse.atf.mozilla.ide.ui.action&quot;</p><p class=code id=tag> &gt;</p>
+     <p class=code id=tag>&lt;action 
+      path=<p class=code id=cstring>&quot;Actions&quot;</p><p class=code id=tag>
+      icon=<p class=code id=cstring>&quot;icons/import.gif&quot;</p><p class=code id=tag>
+      text=<p class=code id=cstring>&quot;Import&quot;</p><p class=code id=tag>
+      types=<p class=code id=cstring>&quot;ELEMENT_NODE&quot;</p><p class=code id=tag>
+      class=<p class=code id=cstring>&quot;com.xyz.ImportNode&quot;</p><p class=code id=tag> /&gt;</p>
+<p class=code id=tag>&lt;/extension&gt;</p>
+</pre>
+<p></p>
+
+<h6 class=CaptionFigColumn id=header>API Information: </h6>The class specified must extend the org.eclipse.atf.mozilla.ide.ui.actions.DOMSelectionAction class.
+<p></p>
+
+<h6 class=CaptionFigColumn id=header>Supplied Implementation: </h6>The actions supplied by ATF can be found in the org.eclipse.atf.mozilla.ide.ui.extras plugin.
+<p></p>
+
+<br>
+<p class=note id=copyright>
+Copyright (c) 2006, 2007 IBM Corporation and others.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+Contributors:
+ IBM Corporation - initial API and implementation
+<p></p>
+
+</p>
+</BODY>
+</HTML>

@@ -1,0 +1,44 @@
+##########################################################################
+# Where to  write logs
+log4j.rootLogger=DEBUG, A1, F1
+
+##########################################################################
+# ConsoleLogAppender ist ein eigene Appender, der in die interne Console schreibt
+#log4j.appender.CONSOLEOUT=at.tuwien.prip.docwrap.ide.utils.ConsoleLogAppender
+#log4j.appender.CONSOLEOUT.layout=org.apache.log4j.PatternLayout
+#log4j.appender.CONSOLEOUT.layout.ConversionPattern=%d{[yyyy-MM-dd / HH:mm:ss:SSS]} - %-5p - %C.%M ---> %m (line:%L) %n
+#log4j.appender.CONSOLEOUT.logLevel=DEBUG
+
+##########################################################################
+# Logging to console
+log4j.appender.A1=org.apache.log4j.ConsoleAppender
+log4j.appender.A1.target=System.err
+log4j.appender.A1.layout=org.apache.log4j.PatternLayout
+#log4j.appender.A1.layout.ConversionPattern=%-4r %-5p [%t] %37c %3x - %m%n
+log4j.appender.A1.layout.ConversionPattern=%-5p %m%n
+
+##########################################################################
+# Logging to file
+log4j.appender.F1=org.apache.log4j.RollingFileAppender
+log4j.appender.F1.File=weblearn.log
+log4j.appender.F1.MaxFileSize=500KB
+log4j.appender.F1.layout=org.apache.log4j.PatternLayout
+log4j.appender.F1.layout.ConversionPattern=%d{ISO8601} %p: %m%n
+
+##########################################################################
+# Restrict some verbose classes and packages
+#log4j.logger.org.weblearn.core.learn.impl.learner.cluster.treediff=INFO
+#log4j.logger.org.weblearn.core.learn.impl.learner.cluster.tree.TreeDomHelper=INFO
+#log4j.logger.org.weblearn.core.learn.impl.learner.cbfilter=INFO
+#log4j.logger.org.weblearn.core.learn.impl.engine.cbfilter=INFO
+#log4j.logger.org.weblearn.core.learn.cluster.attribute.html=OFF
+
+#log4j.logger.org.weblearn.ui.wrapper.control.impl=INFO
+
+#log4j.logger.org.weblearn.core.eval.script=DEBUG
+#log4j.logger.org.weblearn.test.learner.query=DEBUG
+#log4j.logger.edu.umass.cs.mallet=ERROR
+#log4j.logger.edu.umass.cs.mallet.base.fst=ERROR
+
+#log4j.logger.edu.stanford.smi.protege=FINE
+#log4j.logger.edu.stanford.smi.protegex=FINE

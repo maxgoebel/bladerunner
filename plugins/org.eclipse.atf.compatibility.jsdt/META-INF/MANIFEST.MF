@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ATF-JSDT Compatibility Plug-in (Incubation)
+Bundle-SymbolicName: org.eclipse.atf.compatibility.jsdt;singleton:=true
+Bundle-Version: 0.3.0.qualifier
+Bundle-Activator: org.eclipse.atf.compatibility.jsdt.Activator
+Require-Bundle: com.ibm.icu,
+ org.eclipse.ui,
+ org.eclipse.ui.ide,
+ org.eclipse.core.runtime,
+ org.eclipse.debug.ui,
+ org.eclipse.jface.text,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.atf.mozilla.ide.debug,
+ org.eclipse.wst.jsdt.core,
+ org.eclipse.wst.jsdt.ui,
+ org.eclipse.wst.sse.ui
+Eclipse-LazyStart: true
+Export-Package: org.eclipse.atf.compatibility.jsdt
+Bundle-RequiredExecutionEnvironment: J2SE-1.4

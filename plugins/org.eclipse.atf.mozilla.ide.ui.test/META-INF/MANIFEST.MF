@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ATF Mozilla IDE UI Test Plug-in (Incubation)
+Bundle-SymbolicName: org.eclipse.atf.mozilla.ide.ui.test
+Bundle-Version: 0.3.0.qualifier
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Vendor: eclipse.org
+Require-Bundle: org.junit;bundle-version="3.8.2",
+ org.eclipse.atf.mozilla.ide.ui;bundle-version="0.3.0",
+ org.eclipse.ui;bundle-version="3.5.0",
+ org.mozilla.xpcom;bundle-version="1.8.1",
+ org.eclipse.core.runtime;bundle-version="3.5.0",
+ org.eclipse.core.resources;bundle-version="3.5.0",
+ org.eclipse.ui.ide;bundle-version="3.5.0",
+ org.eclipse.atf.mozilla.ide.core;bundle-version="0.3.0"

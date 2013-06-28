@@ -1,0 +1,228 @@
+Important information on ATF:
+
+This document contains four important sections -- please make sure you look them over.
+They are:
+
+- Prerequisites:
+- Installation Instructions
+- Finalizing an ATF Installation:
+- Reconstituting the ATF Eclipse Tree:
+- Using ATF:
+- Known Issues:
+- Version History:
+
+--------------------------------------------------------------------------------------
+
+--------------
+Prerequisites:
+--------------
+
+Supported Platforms and Operating Systems:
+
+	* Windows 2000
+	* Windows XP
+	* Linux
+
+Hardware:
+
+    * 1024 MB disk space
+    * 1024 MB RAM
+    * 1-GHz processor or above
+
+Software:
+
+    * Eclipse SDK 3.2M5 http://fullmoon.torolab.ibm.com/downloads/drops/S-3.2M5-200602171115/index.php
+    * Eclipse Web Tools Project (WTP) 1.5M5 (and prereqs) http://download.eclipse.org/webtools/downloads/drops/S-1.5M5-200603022222/
+    * Java™ 1.4.2 (Sun or IBM)
+    * Tomcat 5 or above or other WTP-supported server
+    * XULRunner http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/1.8.0.1/
+
+	Installing XULRunner and registering it with your operating system
+	
+	   1. Download the appropriate XULRunner package for your operating system.
+	   2. Unpack the XULRunner package in a directory of your choice (for example, C:\XULRunner).
+	   3. Change to the directory where the XULRunner executable file resides.
+	   4. Register XULRunner by executing the following at the command line:
+	            xulrunner --register-global
+
+-------------------------
+Installation Instructions
+-------------------------
+1) Install Java SDK 1.4.2
+	- http://java.sun.com/j2se/1.4.2/download.html
+2) Install J2EE Server
+	- Tomcat v5.0 can be found at http://tomcat.apache.org/download-55.cgi#5.0.28
+2) Install prereq versions of Eclipse and WTP (see Prerequisite section above)
+3) Uninstall any previous version of Mozilla xulrunner
+	- (Win32) From a command line, execute "xulrunner --unregister-global"
+	- (Linux) From a command line, execute "sudo ./xulrunner --unregister-global"
+4) Download the nightly xulrunner build
+	-  http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/1.8.0.1/
+5) Untar or unzip xulrunner build and install
+	- (Win32) From a command line, execute "xulrunner -register-global"
+	- (Linux) From a command line, execute "sudo ./xulrunner --register-global"
+6) Install AJAX Toolkit Framework features
+	- Start Eclipse 
+	- Select Help->Software Updates->Find and Install...->Search for new features to install
+	- Install ATF features from the appropriate archived site (.zip) or URL
+	- Restart Eclipse with the "-clean" flag (i.e. eclipse -clean) from a command line
+
+-------------------------------
+Finalizing an ATF Installation:
+-------------------------------
+Upon installing ATF through the downloadable zip file, certain pieces of 3rd party content
+should be added to some of the plugins in order to gain ATF's full functionality. The 
+purpose of this section is to specify where to get these pieces of 3rd party content, and
+where to place the content within the installed plugins.
+
+- In the org.eclipse.atf.personality.rico.runtime plugin:
+  - under the resources/ directory
+    - add prototype.js
+    - add rico.js
+    
+  Note: prototype.js and rico.js can be downloaded from
+  http://www.openrico.org/rico/downloads.page
+  
+  Note: this has only been tested with prototype 1.3.1 and rico 1.1-beta2
+  
+- In the org.eclipse.atf.personality.dojo.runtime plugin:
+  - under the resources/ directory
+    - add demos
+    - add src
+    - add build.txt
+    - add CHANGELOG
+    - add dojo.js
+    - add dojo.js.uncompressed.js
+    - add iframe_history.html
+    - add LICENSE
+    - add README
+    
+  Note: Dojo can be downloaded from 
+  http://dojotoolkit.org/download/
+  
+  Note: this has only been tested with Dojo 0.2.2
+  
+- In the org.eclipse.atf.javascript.validator plugin:
+  - add jslint.js directly under the top level plugin
+
+  Note: you can obtain jslint.js by:
+    - Go to the URL, http://www.jslint.com/fulljslint.js
+    - Save the page as "jslint.js"
+
+-------------------------------------------
+Reconstituting the ATF Eclipse Source Tree:
+-------------------------------------------
+The ATF CVS source code contains a 'trimmed' version of the AJAX Toolkit Framework, 
+meaning that there is no 3rd party code included. The purpose of this section is to 
+a) tell you what was removed and b) advise you on how you may pull in the 
+missing pieces to make a buildable ATF source tree of your own.
+
+Here's what has been trimmed and what needs to be done:
+
+- In the org.eclipse.atf.personality.rico.runtime plugin:
+  - in the resources/ directory
+    - add prototype.js
+    - add rico.js
+
+  Note: you can obtain prototype.js and rico.js from 
+  http://openrico.org/rico/downloads.page
+  
+  Note: this has only been tested with prototype 1.3.1 and rico 1.1-beta2
+
+- In the org.eclipse.atf.personality.dojo.runtime plugin:
+  - in the resources/ directory
+    - add demos
+    - add src
+    - add build.txt
+    - add CHANGELOG
+    - add dojo.js
+    - add dojo.js.uncompressed.js
+    - add iframe_history.html
+    - add LICENSE
+    - add README
+
+  Note: you can obtain the necessary Dojo code from 
+  http://dojotoolkit.org/download/
+  
+  Note: this has only been tested with Dojo 0.2.2
+  
+  Note: The ATF javascript validator will flag a few of the base Dojo
+  javascript source files as having errors. These "errors" can be ignored
+  and should not cause any break in Dojo functionality. 
+
+- In the org.eclipse.atf.javascript.validator plugin:
+  - add jslint.js under top level of the plugin
+
+  Note: you can obtain jslint.js by:
+    - Go to the URL, http://www.jslint.com/fulljslint.js
+    - Save the page as "jslint.js"
+
+- Add the 
+
+  org.mozilla.javascript 
+  org.mozilla.xpcom
+  org.eclipse.atf.personality.zimbra.runtime
+  
+  plugins:
+
+    - download
+      - ftp://ftp.mozilla.org/pub/mozilla.org/js/eclipse/plugins/org.mozilla.javascript_1.6.2.jar
+      - ftp://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/1.8.0.1/eclipse/org.mozilla.xpcom_1.8.0.1.jar
+	  - http://cvs.zimbra.com/org.eclipse.atf.personality.zimbra.runtime_3.1.0.jar
+    
+    - then in the Explorer view:
+      - Import... -> Plug-in Development -> External Plug-ins and Fragments
+	  - Uncheck "The target platform..." box
+	  - Specify the location of the folder containing three plugins in the Plug-in Location
+	  - Click Next >
+	  - Select the three plugins and click Add
+	  - Click Finish
+
+- If you are running on Linux:
+  -in the org.eclipse.atf.mozilla.swt.browser plugin, copy .classpath_gtk over .classpath, ie:
+  
+    cp .classpath_gtk .classpath
+
+  (or something of that nature). The default .classpath is set up for Windows.
+
+- Rebuild (clean) your workspace
+  - Project -> Clean... -> Clean All Projects
+
+- If you still see compilation errors try restarting Eclipse: during testing, the most common issue we 
+  hit was some problem with the prerequisites not being completely or correctly 
+  installed. Please check to make sure that all elements of Eclipse and WTP have
+  been installed correctly and at the correct level.
+
+----------
+Using ATF:
+----------
+  
+- See Help -> Help Contents -> AJAX Toolkit Framework
+
+-------------
+Known Issues:
+-------------
+- We've had reports of intermittent problems bringing up Mozilla for the
+  first time when installing under Linux. If this happens, try running it
+  again -- the problem appears to resolve itself on the second try. We are
+  investigating the problem.
+  
+- Occasional synchronization problems occur when running your application
+  on Mozilla and you'll get a 404 error when the browser comes up. If this
+  happens, a shift-Reload will fix the problem.
+  
+  
+---------------
+Version History
+---------------
+1.0.0 - Initial Release on alphaWorks, 02/28/06
+1.0.1 - Code update on alphaWorks, 03/10/06
+0.1	- Initial Release on Eclipse 05/03/06
+
+---------------------------
+
+Craig Becker
+AJAX Toolkit Framework
+IBM Corp
+Austin, Texas
+jlpicard@us.ibm.com

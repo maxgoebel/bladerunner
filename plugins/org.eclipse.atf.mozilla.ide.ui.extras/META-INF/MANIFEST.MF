@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ATF Mozilla IDE UI Extras Plug-in (Incubation)
+Bundle-SymbolicName: org.eclipse.atf.mozilla.ide.ui.extras;singleton:=true
+Bundle-Version: 0.3.0.qualifier
+Bundle-Activator: org.eclipse.atf.mozilla.ide.ui.extras.MozillaExtrasPlugin
+Bundle-Localization: plugin
+Bundle-Vendor: eclipse.org
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.atf.mozilla.ide.ui,
+ org.eclipse.atf.mozilla.ide.core,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors,
+ org.mozilla.xpcom
+Eclipse-LazyStart: true
+Export-Package: org.eclipse.atf.mozilla.ide.ui.extras.actions
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

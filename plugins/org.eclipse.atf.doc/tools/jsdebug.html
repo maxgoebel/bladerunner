@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head><meta name="copyright" content="Copyright (c) IBM Corporation and others 2000, 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." />
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <link href="../atfdocs.css" rel="STYLESHEET" CHARSET="ISO-8859-1" TYPE="text/css">
+  <title>JavaScript Debugger</title>
+</head>
+<body>
+<h1>JavaScript Debugger</h1>
+<p>The JavaScript debugger operates much like any other debugger in Eclipse, such as the Java Debugger in the JDT.
+It shares many of the same UI concepts (views, gestures) provided by the base Eclipse platform.  Currently, features 
+in the debugger are limited to breakpoints, stepping, and call stack and variable inspection.  Other features will follow.</p>
+<p>To begin a debug session, right click on an application file (.html, .jsp, etc.) and choose "Debug in Mozilla" to create a launch configuration.  Alternatively,
+you may use the Debug... menus.  Debug targets are associated with a Mozilla browser launched by a debug launch configuration.  There is only one thread
+per browser running JavaScript.  The thread will suspend at breakpoints and optionally on exceptions.  When suspended, the JavaScript
+call stack will be shown in the Debug View in the Debug Perspective.  Selecting a stack frame will result in the corresponding source code being
+displayed.  If it is possible to map this stack frame to script in the associated Project in your Workbench, an editor will
+open on that file, positioned at the corresponding line of script.  If not, the source code will appear, as downloaded from
+the web, read-only.  Modifications made to script or HTML in the editor during a debug session will not be reflected in
+the application until it is redeployed and run in a new session.</p>
+<p>Technical background: The current implementation of the debugger uses the jsd debugging APIs in the Mozilla platform -- the same APIs that are used
+to implement Mozilla's Venkman, a XUL-based GUI debugger.  An XPCOM to Java bridge is used to reflect these APIs into Java where it is associated with the Eclipse Debugger plugins and extension points.</p>
+
+
+
+
+
+
+</body>
+</html>

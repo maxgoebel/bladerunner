@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="at/tuwien/prip/core/model/docgraph/|at/tuwien/prip/core/model/docgraph/IDocGraph.java|at/tuwien/prip/core/model/docgraph/SchemaGraph.java|at/tuwien/prip/core/model/docgraph/hier/IDocHierGraph.java|at/tuwien/prip/core/model/docgraph/schema/SchemaGraph.java|at/tuwien/prip/core/model/graph/schema/SchemaGraph.java|at/tuwien/prip/core/model/project/learning/LearningSystem.java|at/tuwien/prip/core/model/SegmentType.java|at/tuwien/prip/core/model/graph/LayoutType.java|at/tuwien/prip/core/model/token/|at/tuwien/prip/core/model/project/learning/LearningFilter.java|at/tuwien/prip/core/model/graph/agent/AgentStateEdge.java|at/tuwien/prip/core/model/agent/states/WordAgentState.java|at/tuwien/prip/core/model/agent/states/AlignmentAgentState.java|at/tuwien/prip/core/model/agent/states/ParagraphAgentState.java|at/tuwien/prip/core/model/agent/states/TableAgentState.java|at/tuwien/prip/core/model/project/annotation/Table.java|at/tuwien/prip/core/model/project/document/DocumentEntry.java|at/tuwien/prip/model/agent/|at/tuwien/prip/model/graph/agent/|at/tuwien/prip/model/document/segments/LayoutSegment.java|at/tuwien/prip/model/project/document/DocumentEntry.java|at/tuwien/prip/model/project/selection/CellSelection.java" kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="bin/"/>
+	<classpathentry kind="lib" path="lib/ejb3-persistence-1.0.2.GA.jar"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

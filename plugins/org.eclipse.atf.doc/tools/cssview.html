@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head><meta name="copyright" content="Copyright (c) IBM Corporation and others 2000, 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." />
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <link href="../atfdocs.css" rel="STYLESHEET" CHARSET="ISO-8859-1" TYPE="text/css">
+  <title>CSS</title>
+</head>
+<body>
+<h1><img src="imgs/cssinspector.gif"> CSS</h1>
+<p>The CSS view shows all style rules that are currently applied to a selected DOM node.
+ Several tabs compose the CSS view that show different representations of a DOM element's style.</p>
+ 
+ <p>CSS view tabs:</p>
+ <ul>
+ 	<li>Style Rules - Shows the rules and their defined properties currently applied to an element. </br>
+ 	The following toolbar buttons are availabe in the Style Rules tab: 	
+ 		<ul>
+ 			<li><img src="imgs/add_correction.gif"> Add Property - Adds a new property to the selected style rule </li>
+ 			<li><img src="imgs/write_obj.gif"> Edit Property - Edit the values of the selected style property </li>
+ 			<li><img src="imgs/goto_input.gif"> Open CSS file - Opens a rule or property in an editor to the URL and line number </li>
+ 			<li><img src="imgs/highlight.gif"> Toggle Highlighting - Highlights all DOM elements currently using a selected style rule or property </li>
+ 			<li><i>Note: The previous toolbar buttons are also in a context menu accessible by right-clicking in the Style Rules tab</i></li>
+ 		</ul>
+ 		<ul>
+ 			<li><font color="green">Green Properties</font> - Style properties currently affecting the current DOM element selection </li>
+ 			<li><font color="red">Red Properties</font> - Style properties currently cascaded over by other style properties and not affecting the current selection's style. </li>
+ 		</ul>
+ 	</li>
+ 	
+ 	<li>Computed Styles - Shows every style rule either defined formally by rules or inline or computed by the browser.
+ 		<ul>
+ 			<li><font color="green">Green Properties</font> - Style properties currently defined by style rules or inline style declarations </li>
+ 			<li><font color="red">Red Properties</font> - Style properties currently defined by the browser </li>
+ 		</ul>
+ 	</li>		
+ 			
+ 	<li>Box Model - Shows the dimensions, x-y coordinates, padding, border, and margin information.
+ 		<ul>
+ 			<li>Navigation Controls - Allows navigation to other nodes in the DOM from the currently selected node
+ 				<ul>
+ 					<li>Up Arrow - Navigates the selection to the current node's parent</li>
+ 					<li>Down Arrow - Navigates the selection to the current node's first child</li>
+ 					<li>Left Arrow - Navigates the selection to the current node's previous sibling</li>
+ 					<li>Right Arrow - Navigates the selection to the current node's next sibling</li>
+ 				</ul>		
+ 			</li>
+ 		</ul>
+ 	</li>
+ 	<li>Diffs - Shows the changes made to CSS rules and properties either for a given selection or for all changes globally.</li>
+ 	
+ </ul>
+
+
+<p>To open the view:</p>
+<ul>
+	<li>Go to <i>Windows</i> menu.</li>
+	<li>Select <i>Show View</i> and <i>Other...</i> to open the <i>Show View</i> dialog.</li>
+	<li>Under the <i>Mozilla</i> category, select <i>CSS</i>.</li>
+</ul>
+
+<p><b>Related concepts</b><br>
+</p>
+
+
+
+
+</body>
+</html>

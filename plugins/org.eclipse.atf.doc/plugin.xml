@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<plugin>
+   <extension point="org.eclipse.help.toc">
+      <toc file="atfToc.xml" primary="true"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.intro">
+      <intro
+            class="org.eclipse.ui.intro.config.CustomizableIntroPart"
+            id="org.eclipse.atf.doc.intro">
+      </intro>
+   </extension>
+   <extension
+         point="org.eclipse.ui.intro.config">
+      <config
+            introId="org.eclipse.atf.doc.intro"
+            content="introContent.xml"
+            id="org.eclipse.atf.doc.intro.configId">
+         <presentation
+               home-page-id="root">
+            <implementation
+                  kind="html"
+                  os="win32,linux,macosx">
+            </implementation>
+         </presentation>
+      </config>
+   </extension>
+</plugin>

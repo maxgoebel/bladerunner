@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.atf.mozilla.ide.ui">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.atf.mozilla.ide.ui" id="action" name="DOM Inspector Menu Action"/>
+      </appInfo>
+      <documentation>
+         This extension point allows action to be contributed to the context menu of the DOM Inspector when a DOM node is right-clicked from the view.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <complexType>
+         <sequence>
+            <element ref="action"/>
+         </sequence>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="action">
+      <complexType>
+         <attribute name="class" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn="org.eclipse.atf.mozilla.ide.ui.inspector.IMenuItemProvider"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="icon" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="text" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="types" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="path" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         1.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;pre&gt;
+&lt;extension
+     point=&quot;org.eclipse.atf.mozilla.ide.ui.action&quot; &gt;
+     &lt;action 
+      path=&quot;Actions&quot;
+      icon=&quot;icons/import.gif&quot;
+      text=&quot;Import&quot;
+      types=&quot;ELEMENT_NODE&quot;
+      class=&quot;com.xyz.ImportNode&quot; /&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiInfo"/>
+      </appInfo>
+      <documentation>
+         The class specified must extend the org.eclipse.atf.mozilla.ide.ui.actions.DOMSelectionAction class.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         The actions supplied by ATF can be found in the org.eclipse.atf.mozilla.ide.ui.extras plugin.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2006, 2007 IBM Corporation and others.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+Contributors:
+ IBM Corporation - initial API and implementation
+      </documentation>
+   </annotation>
+
+</schema>

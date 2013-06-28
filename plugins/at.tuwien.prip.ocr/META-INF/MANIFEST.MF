@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ocr
+Bundle-SymbolicName: at.tuwien.prip.ocr
+Bundle-Version: 1.0.0.qualifier
+Require-Bundle: at.tuwien.prip.common;bundle-version="1.0.0",
+ at.tuwien.prip.model;bundle-version="1.0.0"

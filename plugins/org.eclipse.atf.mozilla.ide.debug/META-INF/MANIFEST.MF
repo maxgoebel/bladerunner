@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %plugin-name
+Bundle-SymbolicName: org.eclipse.atf.mozilla.ide.debug; singleton:=true
+Bundle-Version: 0.3.0.qualifier
+Bundle-Activator: org.eclipse.atf.mozilla.ide.debug.MozillaDebugPlugin
+Bundle-Vendor: %provider-name
+Bundle-Localization: plugin
+Export-Package: org.eclipse.atf.mozilla.ide.debug,
+ org.eclipse.atf.mozilla.ide.debug.internal.model,
+ org.eclipse.atf.mozilla.ide.debug.model
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.debug.core,
+ org.eclipse.atf.mozilla.ide.core,
+ org.mozilla.xpcom
+Eclipse-LazyStart: true
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

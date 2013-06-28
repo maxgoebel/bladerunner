@@ -1,0 +1,162 @@
+--- NodeImpl.java.old	2008-10-20 13:40:25.000000000 +0200
++++ NodeImpl.java.new	2008-10-21 13:05:50.000000000 +0200
+@@ -47,7 +47,6 @@
+ 
+ //org.w3c imports
+ import org.w3c.dom.*;
+-import org.w3c.dom.html2.*;
+ import org.w3c.dom.html.*;
+ import org.w3c.dom.events.*;
+ import org.w3c.dom.traversal.*;
+@@ -381,9 +380,10 @@
+         final short[] result = { 0 };
+         final Runnable r = new Runnable() { public void run() {
+             if (NodeFactory.getExpandFrames()) {
+-                Document startDoc1 = getOwnerDocument();
+-                Document startDoc2 = other.getOwnerDocument();
+-                if (startDoc1.isSameNode(startDoc2)) {
++                nsIDOMDocument startDoc1 = getInstanceAsnsIDOMNode().getOwnerDocument();
++                nsIDOM3Document startDoc1_L3 = (nsIDOM3Document) startDoc1.queryInterface(nsIDOM3Document.NS_IDOM3DOCUMENT_IID);
++                nsIDOMDocument startDoc2 = NodeFactory.getnsIDOMNode(other).getOwnerDocument();
++                if (startDoc1_L3.isSameNode(startDoc2)) {
+                     //the standard case, inside of the same document
+                     nsIDOMNode mozOther = ((NodeImpl) other).getInstance();
+ 
+@@ -394,35 +394,36 @@
+                     //find the common ancestor document and 
+                     //compare position of the ancestor frames
+ 
+-                    Stack/*<Document>*/ docs1 = new Stack/*<Document>*/();
++                    Stack<nsIDOMDocument> docs1 = new Stack<nsIDOMDocument>();
+                     {
+-                        Document d = startDoc1;
++                        nsIDOMDocument d = startDoc1;
+                         while (d!=null) {
+                             docs1.push(d);
+-                            Node p = d.getParentNode();
++                            nsIDOMNode p = d.getParentNode();
+                             if (p==null) d = null;
+                             else d = p.getOwnerDocument();
+                         }
+                     }
+     
+-                    Stack/*<Document>*/ docs2 = new Stack/*<Document>*/();
++                    Stack<nsIDOMDocument> docs2 = new Stack<nsIDOMDocument>();
+                     {
+-                        Document d = startDoc2;
++                        nsIDOMDocument d = startDoc2;
+                         while (d!=null) {
+                             docs2.push(d);
+-                            Node p = d.getParentNode();
++                            nsIDOMNode p = d.getParentNode();
+                             if (p==null) d = null;
+                             else d = p.getOwnerDocument();
+                         }
+                     }
+     
+-                    Document lastCommon = null;
+-                    Document doc1 = null;
+-                    Document doc2 = null;
++                    nsIDOMDocument lastCommon = null;
++                    nsIDOMDocument doc1 = null;
++                    nsIDOMDocument doc2 = null;
+                     while (!docs1.isEmpty() && !docs2.isEmpty()) {
+-                        doc1 = (Document) docs1.pop();
+-                        doc2 = (Document) docs2.pop();
+-                        if (doc1.isSameNode(doc2)) lastCommon = doc1;
++                        doc1 = (nsIDOMDocument) docs1.pop();
++                        nsIDOM3Document doc1_L3 = (nsIDOM3Document) doc1.queryInterface(nsIDOM3Document.NS_IDOM3DOCUMENT_IID);
++                        doc2 = (nsIDOMDocument) docs2.pop();
++                        if (doc1_L3.isSameNode(doc2)) lastCommon = doc1;
+                         else break;
+                     }
+     
+@@ -432,25 +433,26 @@
+                         return;
+                     }
+     
+-                    Node frame1 = doc1.getParentNode();
++                    nsIDOMNode frame1 = doc1.getParentNode();
+                     if (frame1==null) {
+-                        if (docs1.isEmpty()) frame1 = NodeImpl.this;
+-                        else frame1 = ((Document)docs1.peek()).getParentNode();
++                        if (docs1.isEmpty()) frame1 = getInstanceAsnsIDOMNode();
++                        else frame1 = ((nsIDOMDocument)docs1.peek()).getParentNode();
+                     }
+-                    Node frame2 = doc2.getParentNode();
++                    nsIDOMNode frame2 = doc2.getParentNode();
+                     if (frame2==null) {
+-                        if (docs2.isEmpty()) frame2 = other;
+-                        else frame2 = ((Document)docs2.peek()).getParentNode();
++                        if (docs2.isEmpty()) frame2 = NodeFactory.getnsIDOMNode(other);
++                        else frame2 = ((nsIDOMDocument)docs2.peek()).getParentNode();
+                     }
+                 
+                     assert frame1!=null && frame2!=null;
+-                    assert frame1.getOwnerDocument().isSameNode(frame2.getOwnerDocument());
++                    nsIDOM3Node frame1Doc_L3 = (nsIDOM3Document) frame1.getOwnerDocument().queryInterface(nsIDOM3Document.NS_IDOM3DOCUMENT_IID);
++                    assert frame1Doc_L3!=null;
++                    assert frame1Doc_L3.isSameNode(frame2.getOwnerDocument());
+     
+                     //compare position of the frames
+-                    nsIDOM3Node mozFrame1 = (nsIDOM3Node) ((NodeImpl) frame1).getInstance().queryInterface(nsIDOM3Node.NS_IDOM3NODE_IID);
+-                    nsIDOMNode mozFrame2 = ((NodeImpl) frame2).getInstance();
++                    nsIDOM3Node frame1_L3 = (nsIDOM3Node) frame1.queryInterface(nsIDOM3Node.NS_IDOM3NODE_IID);
+     
+-                    int cresult = mozFrame1.compareDocumentPosition(mozFrame2);
++                    int cresult = frame1_L3.compareDocumentPosition(frame2);
+                     result[0] = (short) cresult;
+                 }
+             } else {
+@@ -559,6 +561,7 @@
+         final Runnable r = new Runnable() { public void run() {
+             nsIDOMNode currentNode = getInstance();
+             if (NodeFactory.getExpandFrames()) {
++                System.err.println("currentNode="+currentNode.getNodeName());
+                 if (currentNode.getNodeType() == nsIDOMNode.DOCUMENT_NODE)
+                 {
+                     inIDOMUtils utils = (inIDOMUtils)
+@@ -593,9 +596,12 @@
+ 
+                         if (parentParentNode == null)
+                             result[0] = (Node) NodeFactory.getNodeInstance(parentNode);
+-                        else
++                        else {
++                            System.err.println("URI1="+((nsIDOM3Document) parentNode.queryInterface(nsIDOM3Document.NS_IDOM3DOCUMENT_IID)).getDocumentURI());
++                            System.err.println("URI2="+((nsIDOM3Document) parentParentNode.getOwnerDocument().queryInterface(nsIDOM3Document.NS_IDOM3DOCUMENT_IID)).getDocumentURI());
+                             result[0] = (Node) NodeFactory.getNodeInstance(parentParentNode);    
+                     } 
++                    }
+                     else
+                         result[0] = (Node) NodeFactory.getNodeInstance(parentNode);
+                 }
+@@ -690,9 +696,27 @@
+     {
+         //METHOD-BODY-START - autogenerated code
+         Callable<Document> c = new Callable<Document>() { public Document call() {
+-            nsIDOMDocument result = getInstanceAsnsIDOMNode().getOwnerDocument();
+-            return (Document) NodeFactory.getNodeInstance(result);
++            nsIDOMNode currentDoc = getInstanceAsnsIDOMNode().getOwnerDocument();
++
++            while (currentDoc!=null) {
++                inIDOMUtils utils = (inIDOMUtils)
++                    Mozilla.getInstance().getServiceManager().getServiceByContractID(
++                        "@mozilla.org/inspector/dom-utils;1",
++                        inIDOMUtils.INIDOMUTILS_IID);
++                nsIDOMNode parentNode = utils.getParentForNode(currentDoc, false);
++
++                if (parentNode == null) {
++                    //is toplevel document
++                    return (Document) NodeFactory.getNodeInstance(currentDoc);
++                } else {
++                    currentDoc = parentNode.getOwnerDocument();
++                }
++            }
++
++            //should not be reached
++            return (Document) NodeFactory.getNodeInstance(currentDoc);
+         }};
++
+         return ThreadProxy.getSingleton().syncExec(c);
+         //METHOD-BODY-END - autogenerated code
+     }

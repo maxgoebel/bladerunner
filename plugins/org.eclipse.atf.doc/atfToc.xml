@@ -1,0 +1,49 @@
+<?NLS TYPE="org.eclipse.help.toc"?>
+<!-- 
+/*******************************************************************************
+ * Copyright (c) 2006, 2007 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+  -->
+
+<toc label="AJAX Toolkit Framework User Guide" topic="index.html">
+	<topic label="Concepts">
+        <topic href="concepts/overview.html" label="Overview"/>
+        <topic label="Tools">
+        	<topic href="tools/mozbrowser.html" label="Mozilla Browser"/>
+        	<topic href="tools/dominspect.html" label="DOM Inspector"/>
+        	<topic href="tools/browserconsole.html" label="Browser Console"/>
+        	<topic href="tools/xhrmon.html" label="Request Monitor"/>
+        	<topic href="tools/jsEval.html" label="JavaScript View"/>
+        	<topic href="tools/domsource.html" label="DOM Source"/>
+        	<topic href="tools/cssview.html" label="CSS"/>
+        	<topic href="tools/domWatcher.html" label="DOM Watcher"/>
+        	<topic href="tools/domCompare.html" label="DOM Compare"/>
+        	<topic href="tools/jsdebug.html" label="JavaScript Debugger"/>
+        </topic>
+    </topic>
+    <topic label="Tasks">
+        <topic href="tasks/launch/launch.html" label="Launching an AJAX Application"/>
+        <topic href="tools/jsdebug.html" label="Debugging an AJAX Application"/>
+        <anchor id="ajaxTasks" />
+	</topic>
+	<topic label="Reference">
+		<topic href="ref/extension-points/index.html" label="Extension Points Reference">
+			<topic href="ref/extension-points/org_eclipse_atf_mozilla_ide_ui_action.html" label="org.eclipse.atf.mozilla.ide.ui.action"></topic>
+			<topic href="ref/extension-points/org_eclipse_atf_mozilla_ide_ui_filter.html" label="org.eclipse.atf.mozilla.ide.ui.filter"></topic>
+			<topic href="ref/extension-points/org_eclipse_atf_mozilla_ide_ui_toolbar.html" label="org.eclipse.atf.mozilla.ide.ui.toolbar"></topic>
+			<topic href="ref/extension-points/org_eclipse_atf_mozilla_ide_ui_view.html" label="org.eclipse.atf.mozilla.ide.ui.view"></topic>
+		</topic>
+		<topic href="ref/limitations.html" label="AJAX Toolkit Framework Limitations"/>
+	</topic>
+	
+	<topic label="Legal" href="notices.html"/>
+	
+	
+</toc>

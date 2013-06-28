@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src-test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="external/bcmail-jdk15-1.44.jar"/>
+	<classpathentry kind="lib" path="external/bcprov-jdk15-1.44.jar"/>
+	<classpathentry kind="lib" path="external/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="external/icu4j-3.8.jar"/>
+	<classpathentry kind="lib" path="external/junit-4.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/fontbox-1.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/jembox-1.6.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="lib" path="lib/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/jai_codec.jar"/>
+	<classpathentry kind="lib" path="lib/jai_core.jar"/>
+	<classpathentry kind="lib" path="lib/jai_imageio.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="lib/mlibwrapper_jai.jar"/>
+	<classpathentry kind="lib" path="lib/TGWikiBrowser.jar"/>
+	<classpathentry kind="lib" path="lib/touchgraph-modified-20110218.jar"/>
+	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="lib/xmillum.jar"/>
+	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

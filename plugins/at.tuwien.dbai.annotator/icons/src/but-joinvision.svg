@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="but-joinvision.svg">
+  <defs
+     id="defs4">
+    <filter
+       inkscape:collect="always"
+       id="filter3783"
+       x="-0.12"
+       width="1.24"
+       y="-0.12"
+       height="1.24">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="1.0535714"
+         id="feGaussianBlur3785" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="-591.18751"
+     inkscape:cy="870.2878"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1440"
+     inkscape:window-height="854"
+     inkscape:window-x="0"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g3787"
+       inkscape:export-filename="/home/max/dev/projects/tuwien/plugins/at.tuwien.prip.docwrap.ide/icons/full/docwrap/but-jv.png"
+       inkscape:export-xdpi="37.133919"
+       inkscape:export-ydpi="37.133919">
+      <path
+         transform="matrix(2.9682887,0,0,2.9682887,1504.2197,-246.32621)"
+         d="m -701.0714,129.68361 a 10.535714,10.535714 0 1 1 -21.07143,0 10.535714,10.535714 0 1 1 21.07143,0 z"
+         sodipodi:ry="10.535714"
+         sodipodi:rx="10.535714"
+         sodipodi:cy="129.68361"
+         sodipodi:cx="-711.60712"
+         id="path2993"
+         style="fill:#ff8d0c;fill-opacity:1;stroke:none;filter:url(#filter3783)"
+         sodipodi:type="arc" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text2985"
+         y="157.71933"
+         x="-631.42859"
+         style="font-size:72px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+         xml:space="preserve"><tspan
+           y="157.71933"
+           x="-631.42859"
+           id="tspan2987"
+           sodipodi:role="line"><tspan
+             id="tspan2991"
+             style="font-size:72px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Arial;-inkscape-font-specification:Arial Bold">j</tspan><tspan
+             id="tspan2989"
+             style="font-size:72px;font-style:normal;font-variant:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#4d4d4d;font-family:URW Gothic L;-inkscape-font-specification:URW Gothic L Book">v</tspan></tspan></text>
+    </g>
+  </g>
+</svg>

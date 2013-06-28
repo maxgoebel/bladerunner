@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.ui.debugModelPresentations">
+      <debugModelPresentation
+            class="org.eclipse.atf.mozilla.ide.debug.ui.MozillaDebugModelPresentation"
+            id="org.eclipse.atf.mozilla.ide.debug">
+      </debugModelPresentation>
+   </extension>
+
+   <extension
+         point="org.eclipse.debug.core.statusHandlers">
+      <statusHandler
+            id="org.eclipse.atf.mozilla.ide.debug.ui.errorStatusHandler"
+            plugin="org.eclipse.atf.mozilla.ide.debug"
+            code="100"
+            class="org.eclipse.atf.mozilla.ide.debug.ui.MozillaErrorStatusHandler">
+      </statusHandler>
+   </extension>
+
+<!-- Context support -->
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            name="%Context.jsDebugging.name"
+            description="%Context.jsDebugging.description"
+            id="org.eclipse.atf.mozilla.ide.debug.ui.debugging"
+            parentId="org.eclipse.debug.ui.debugging">
+      </context>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.debugModelContextBindings">
+      <modelContextBinding
+            contextId="org.eclipse.atf.mozilla.ide.debug.ui.debugging"
+            debugModelId="org.eclipse.atf.mozilla.ide.debug"/>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.contextViewBindings">
+      <contextViewBinding
+            contextId="org.eclipse.atf.mozilla.ide.debug.ui.debugging"
+            viewId="org.eclipse.debug.ui.DebugView"/>
+      <contextViewBinding
+            contextId="org.eclipse.atf.mozilla.ide.debug.ui.debugging"
+            viewId="org.eclipse.debug.ui.VariableView"/>
+      <contextViewBinding
+            contextId="org.eclipse.atf.mozilla.ide.debug.ui.debugging"
+            viewId="org.eclipse.debug.ui.ExpressionView"/>
+      
+      <contextViewBinding
+            contextId="org.eclipse.atf.mozilla.ide.debug.ui.debugging"
+            viewId="org.eclipse.atf.mozilla.ide.debug.ui.scriptview"/>
+            
+      <!-- Supporting Mozilla Views -->
+<!--      <contextViewBinding
+            contextId="org.eclipse.atf.mozilla.ide.debug.ui.debugging"
+            viewId="org.eclipse.atf.mozilla.ide.ui.views.console"/> 
+            
+      <contextViewBinding
+            contextId="org.eclipse.atf.mozilla.ide.debug.ui.debugging"
+            viewId="org.eclipse.atf.mozilla.ide.ui.views.inspector"/>
+      
+      <contextViewBinding
+            contextId="org.eclipse.atf.mozilla.ide.debug.ui.debugging"
+            viewId="org.eclipse.atf.mozilla.ide.ui.views.netmon"/> -->
+            
+<!--      <contextViewBinding
+            contextId="org.eclipse.atf.mozilla.ide.debug.ui.debugging"
+            viewId="org.eclipse.atf.mozilla.ide.debug.ui.DisplayView"/>
+-->   </extension>
+   <extension
+         point="org.eclipse.debug.core.watchExpressionDelegates">
+         <watchExpressionDelegate
+         	debugModel="org.eclipse.atf.mozilla.ide.debug"
+         	delegateClass="org.eclipse.atf.mozilla.ide.debug.ui.watch.WatchExpressionDelegate"/>
+   </extension>
+
+	<extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.eclipse.atf.mozilla.ide.ui.category"
+            name="Web Browser"/>
+      <view
+            category="org.eclipse.atf.mozilla.ide.ui.category"
+            class="org.eclipse.atf.mozilla.ide.debug.ui.scriptview.ScriptView"
+            icon="icons/script.gif"
+            id="org.eclipse.atf.mozilla.ide.debug.ui.scriptview"
+            name="Scripts"/>
+    </extension>
+    
+    <!-- 
+    This is the new way of adapting custom Debug Model element to visualize in views.
+    This is specifically to support getting to the Script Elements from the JSDebugThread
+    object
+    -->
+    	
+    <extension point="org.eclipse.core.runtime.adapters">
+ 		<factory 
+ 			class="org.eclipse.atf.mozilla.ide.debug.ui.internal.adapter.JSDebugThreadAdapterFactory" 
+   			adaptableType="org.eclipse.atf.mozilla.ide.debug.internal.model.JSDebugThread">
+      
+      		<adapter type="org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider"/>
+      	</factory>
+      	
+      	<factory 
+ 			class="org.eclipse.atf.mozilla.ide.debug.ui.internal.adapter.JSDebugScriptElementAdapterFactory" 
+   			adaptableType="org.eclipse.atf.mozilla.ide.debug.model.IJSDebugScriptElement">
+      
+      		<adapter type="org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider"/>
+      		<adapter type="org.eclipse.debug.internal.ui.viewers.model.provisional.IElementLabelProvider"/>
+      		<adapter type="org.eclipse.debug.ui.sourcelookup.ISourceDisplay"/>
+      	</factory>
+       <factory
+             adaptableType="org.eclipse.atf.mozilla.ide.debug.internal.model.JSDebugStackFrame"
+             class="org.eclipse.atf.mozilla.ide.debug.ui.internal.adapter.JSDebugStackFrameAdapterFactory">
+          <adapter
+                type="org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider">
+          </adapter>
+       </factory>
+       <factory
+             adaptableType="org.eclipse.ui.texteditor.ITextEditor"
+             class="org.eclipse.atf.mozilla.ide.debug.ui.JSBreakpointAdapterFactory">
+          <adapter
+                type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget">
+          </adapter>
+       </factory>
+    </extension>
+    
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.debug.ui.DebugPerspective">
+
+         <view
+               visible="true"
+               relative="org.eclipse.debug.ui.VariableView"
+               relationship="stack"
+               id="org.eclipse.debug.ui.ExpressionView">
+         </view>
+         
+         <view
+               visible="false"
+               relative="org.eclipse.debug.ui.ExpressionView"
+               relationship="stack"
+               id="org.eclipse.atf.mozilla.ide.debug.ui.scriptview">
+         </view>
+         
+         <!-- Supporting Mozilla Views -->
+         <view
+               visible="false"
+               relative="org.eclipse.ui.console.ConsoleView"
+               relationship="stack"
+               id="org.eclipse.atf.mozilla.ide.ui.views.console">
+         </view>
+         
+         <view
+               visible="false"
+               relative="org.eclipse.ui.console.ConsoleView"
+               relationship="stack"
+               id="org.eclipse.atf.mozilla.ide.ui.views.xhrmon">
+         </view>
+         
+         <view
+               visible="false"
+               relative="org.eclipse.ui.views.ContentOutline"
+               relationship="stack"
+               id="org.eclipse.atf.mozilla.ide.ui.views.inspector">
+         </view>
+
+      </perspectiveExtension>
+   </extension>
+
+ <extension point="org.eclipse.ui.startup" >
+ 	<startup class="org.eclipse.atf.mozilla.ide.debug.ui.MozillaDebugUIPlugin" />
+ </extension>
+ <extension
+       point="org.eclipse.ui.popupMenus">
+    <viewerContribution
+          id="org.eclipse.atf.mozilla.ide.debug.ui.RulerPopupActions"
+          targetID="org.eclipse.ui.DefaultTextEditor.RulerContext">
+       <action
+             class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+             id="org.eclipse.atf.mozilla.ide.debug.ui.rulerContextMenu.toggleBreakpointAction"
+             label="Toggle Breakpoint"
+             menubarPath="additions">
+       </action>
+    </viewerContribution>
+ </extension>
+ 
+ <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            name="JavaScript"
+            delegate="org.eclipse.atf.ui.debug.WebLaunchConfigurationDelegate"
+            modes="run,debug"
+            sourceLocatorId="org.eclipse.atf.mozilla.ide.JSSourceLocator"
+ 			sourcePathComputerId=""
+            id="org.eclipse.atf.ui.debug.webApplication">
+         <fileExtension extension="jsp" default="true"/>
+         <fileExtension extension="html" default="false"/>
+      </launchConfigurationType>
+   </extension>
+   
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            type="org.eclipse.atf.ui.debug.webApplication"
+            class="org.eclipse.atf.ui.debug.WebLaunchConfigurationTabGroup"
+            id="org.eclipse.atf.ui.debug.WebLaunchConfigurationTabGroup.webApplication">
+         <launchMode
+         	   description="Launches the specified web application within the Debug perspective"
+               mode="debug"
+               perspective="org.eclipse.debug.ui.DebugPerspective"/>
+         <launchMode
+         	   description="Launches the specified web application in the Web Browser Tools perspective"
+               mode="run"
+               perspective="com.ibm.mozide.ui.perspective"/>
+      </launchConfigurationTabGroup>
+   </extension>
+   
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            icon="icons/script.gif"
+            configTypeID="org.eclipse.atf.ui.debug.webApplication"
+            id="org.eclipse.atf.ui.debug.WebLaunchConfigurationTabImages.webApplication">
+      </launchConfigurationTypeImage>
+   </extension>
+   
+   <!-- Run in Mozilla shortcut -->
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            label="Run JavaScript"
+            icon="icons/script.gif"
+            helpContextId="org.eclipse.atf.debug.shortcut_web_application"
+            modes="run"
+            class="org.eclipse.atf.ui.debug.WebLaunchShortcut"
+            id="org.eclipse.atf.ui.debug.runMozillaShortcut">
+		 
+		 <contextualLaunch>
+		 	<contextLabel mode="run" label="Run JavaScript"/>
+		 	<enablement>
+             <with variable="selection">
+               <count value="1"/>
+               <iterate>
+                 <or>
+                   <test property="org.eclipse.debug.ui.matchesPattern" value="*.htm"/>
+                   <test property="org.eclipse.debug.ui.matchesPattern" value="*.html"/>
+                   <test property="org.eclipse.debug.ui.matchesPattern" value="*.jsp"/>
+                 </or>
+               </iterate>
+             </with>
+            </enablement>
+		 </contextualLaunch>
+		 
+		 <!-- XXX 'perspective' is deprecated starting in 3.1.  Need to redo this here and in the debug shortcut below -->
+         <perspective
+               id="org.eclipse.ui.resourcePerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.debug.ui.DebugPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.jdt.ui.JavaPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.jst.j2ee.J2EEPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.php.perspective">
+         </perspective>
+      </shortcut>
+   </extension>
+   
+   <!-- Debug in Mozilla shortcut -->
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            label="Debug JavaScript"
+            icon="icons/script.gif"
+            helpContextId="org.eclipse.atf.debug.shortcut_web_application"
+            modes="debug"
+            class="org.eclipse.atf.ui.debug.WebLaunchShortcut"
+            id="org.eclipse.atf.ui.debug.debugMozillaShortcut">
+		 
+		 <contextualLaunch>
+		 	<contextLabel mode="debug" label="Debug JavaScript"/>
+		 	<enablement>
+             <with variable="selection">
+               <count value="1"/>
+               <iterate>
+                 <or>
+                   <test property="org.eclipse.debug.ui.matchesPattern" value="*.htm"/>
+                   <test property="org.eclipse.debug.ui.matchesPattern" value="*.html"/>
+                   <test property="org.eclipse.debug.ui.matchesPattern" value="*.jsp"/>
+                 </or>
+               </iterate>
+             </with>
+           </enablement>
+		 </contextualLaunch>
+		 
+         <perspective
+               id="org.eclipse.ui.resourcePerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.debug.ui.DebugPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.jdt.ui.JavaPerspective">
+         </perspective>
+         <perspective
+               id="org.eclipse.jst.j2ee.J2EEPerspective">
+         </perspective>
+      </shortcut>
+   </extension>
+   
+   <extension point="org.eclipse.ui.editorActions">
+    <editorContribution
+          targetID="org.eclipse.ui.DefaultTextEditor"
+          id="org.eclipse.atf.mozilla.ide.debug.ui.rulerActions">
+       <action
+             label="Toggle &amp;Breakpoint"
+             class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+             actionID="RulerDoubleClick"
+             id="org.eclipse.atf.mozilla.ide.debug.ui.doubleClickBreakpointAction"/>
+    </editorContribution>
+ </extension>
+   <extension
+         point="org.eclipse.ui.editors.documentProviders">
+      <provider
+            class="org.eclipse.atf.mozilla.ide.debug.ui.URLStorageDocumentProvider"
+            id="org.eclipse.atf.mozilla.ide.debug.ui.provider1"
+            inputTypes="org.eclipse.atf.mozilla.ide.ui.util.SourceDisplayUtil$StorageEditorInput">
+      </provider>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.eclipse.atf.mozilla.ide.debug.ui.JSDebugActionSet"
+            label="JavaScript Debug"
+            visible="true">
+         <action
+               class="org.eclipse.atf.mozilla.ide.debug.ui.internal.action.AddDebuggerKeywordBreakpointAction"
+               definitionId="org.eclipse.atf.mozilla.ide.debug.ui.commands.AddDebuggerKeywordBreakpoint"
+               icon="icons/suspend_ondebugger_e.gif"
+               id="org.eclipse.atf.mozilla.ide.debug.ui.AddDebuggerKeywordBreakpoint"
+               label="Add Debugger Keyword Breakpoint"
+               menubarPath="org.eclipse.ui.run/breakpointGroup"
+               style="push">
+         </action>
+         <action
+               class="org.eclipse.atf.mozilla.ide.debug.ui.internal.action.AddErrorBreakpointAction"
+               definitionId="org.eclipse.atf.mozilla.ide.debug.ui.commands.AddErrorBreakpoint"
+               icon="icons/suspend_onerror_e.gif"
+               id="org.eclipse.atf.mozilla.ide.debug.ui.AddErrorBreakpoint"
+               label="Add JavaScript Error Breakpoint"
+               menubarPath="org.eclipse.ui.run/breakpointGroup"
+               style="push">
+         </action>
+         <action
+               class="org.eclipse.atf.mozilla.ide.debug.ui.internal.action.AddExceptionBreakpointAction"
+               definitionId="org.eclipse.atf.mozilla.ide.debug.ui.commands.AddExceptionBreakpoint"
+               icon="icons/suspend_onexception_e.gif"
+               id="org.eclipse.atf.mozilla.ide.debug.ui.AddExceptionBreakpoint"
+               label="Add JavaScript Exception Breakpoint"
+               menubarPath="org.eclipse.ui.run/breakpointGroup"
+               style="push">
+         </action>
+         <action
+               class="org.eclipse.atf.mozilla.ide.debug.ui.internal.action.AddStartupBreakpointAction"
+               definitionId="org.eclipse.atf.mozilla.ide.debug.ui.commands.AddStartupBreakpoint"
+               id="org.eclipse.atf.mozilla.ide.debug.ui.AddStartupBreakpoint"
+               label="Add JavaScript Startup Breakpoint"
+               menubarPath="org.eclipse.ui.run/breakpointGroup"
+               style="push">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="org.eclipse.atf.mozilla.ide.debug.ui.category"
+            name="JavaScript Debug UI Commands">
+      </category>
+      <command
+            categoryId="org.eclipse.atf.mozilla.ide.debug.ui.category"
+            id="org.eclipse.atf.mozilla.ide.debug.ui.commands.AddDebuggerKeywordBreakpoint"
+            name="Add JavaScript Debugger Keyword Breakpoint">
+      </command>
+      <command
+            categoryId="org.eclipse.atf.mozilla.ide.debug.ui.category"
+            id="org.eclipse.atf.mozilla.ide.debug.ui.commands.AddErrorBreakpoint"
+            name="Add JavaScript Error Breakpoint">
+      </command>
+      <command
+            categoryId="org.eclipse.atf.mozilla.ide.debug.ui.category"
+            id="org.eclipse.atf.mozilla.ide.debug.ui.commands.AddExceptionBreakpoint"
+            name="Add JavaScript Exception Breakpoint">
+      </command>
+      <command
+            categoryId="org.eclipse.atf.mozilla.ide.debug.ui.category"
+            id="org.eclipse.atf.mozilla.ide.debug.ui.commands.AddStartupBreakpoint"
+            name="Add JavaScript Startup Breakpoint">
+      </command>
+   </extension>
+
+<extension
+       point="org.eclipse.ui.viewActions">
+    <viewContribution
+          id="org.eclipse.atf.mozilla.ide.debug.ui.VariableViewActions"
+          targetID="org.eclipse.debug.ui.VariableView">
+       <menu
+             id="org.eclipse.atf.mozilla.ide.debug.ui.VariableView.jsSubMenu"
+             label="%VariablesViewJavaScriptSubmenu.label"
+             path="jsActions">
+          <groupMarker
+                name="org.eclipse.atf.mozilla.ide.debug.ui.jsPart">
+          </groupMarker>
+       </menu>
+       <action
+             class="org.eclipse.atf.mozilla.ide.debug.ui.internal.action.VariablesViewShowFunctionsAction"
+             icon="icons/full/obj16/methdef_obj.gif"
+             id="org.eclipse.atf.mozilla.ide.debug.ui.variableViewActions.ShowFunctions"
+             label="%showFunctionsAction.label"
+             menubarPath="org.eclipse.atf.mozilla.ide.debug.ui.VariableView.jsSubMenu/jsPart"
+             style="toggle">
+       </action>
+       <action
+             class="org.eclipse.atf.mozilla.ide.debug.ui.internal.action.VariablesViewShowInternalsAction"
+             icon="icons/full/obj16/methdef_obj.gif"
+             id="org.eclipse.atf.mozilla.ide.debug.ui.variableViewActions.ShowInternals"
+             label="%showInternalsAction.label"
+             menubarPath="org.eclipse.atf.mozilla.ide.debug.ui.VariableView.jsSubMenu/jsPart"
+             style="toggle">
+       </action>
+    </viewContribution>
+ </extension>
+<extension
+      point="org.eclipse.debug.ui.toggleBreakpointsTargetFactories">
+   <toggleTargetFactory
+         class="org.eclipse.atf.mozilla.ide.debug.ui.internal.JSToggleBreakpointsTargetFactory"
+         id="org.eclipse.atf.mozilla.ide.debug.ui.JStoggleTargetFactory">
+   </toggleTargetFactory>
+</extension>
+</plugin>

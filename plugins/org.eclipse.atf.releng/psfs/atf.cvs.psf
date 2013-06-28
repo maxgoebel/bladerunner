@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.eclipse.team.cvs.core.cvsnature">
+
+  <!-- ############################################################################### -->
+  <!-- # Copyright (c) 2003-2009 by nexB, Inc. and others -->
+  <!-- # All rights reserved. This program and the accompanying materials -->
+  <!-- # are made available under the terms of the Eclipse Public License v1.0 -->
+  <!-- # which accompanies this distribution, and is available at -->
+  <!-- # http://www.eclipse.org/legal/epl-v10.html -->
+  <!-- # Contributors: -->
+  <!-- #     nexB Corporation - initial API and implementation -->
+  <!-- #     Zend Technologies Ltd. - ongoing enhancements -->
+  <!-- #     JBoss by Red Hat - ongoing enhancements -->
+  <!-- ############################################################################### -->
+
+  <!-- !*** features -->
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.atf/components/features/org.eclipse.atf.feature,org.eclipse.atf.feature,HEAD"/>
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.atf/components/features/org.eclipse.atf.mozilla.ide.feature,org.eclipse.atf.mozilla.ide.feature,HEAD"/>
+
+  <!-- !*** plugins -->
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.atf/components/plugins/org.eclipse.atf.doc,org.eclipse.atf.doc,HEAD"/>
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.atf/components/plugins/org.eclipse.atf.mozilla.ide.core,org.eclipse.atf.mozilla.ide.core,HEAD"/>
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.atf/components/plugins/org.eclipse.atf.mozilla.ide.debug,org.eclipse.atf.mozilla.ide.debug,HEAD"/>
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.atf/components/plugins/org.eclipse.atf.mozilla.ide.debug.ui,org.eclipse.atf.mozilla.ide.debug.ui,HEAD"/>
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.atf/components/plugins/org.eclipse.atf.mozilla.ide.ui,org.eclipse.atf.mozilla.ide.ui,HEAD"/>
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.atf/components/plugins/org.eclipse.atf.mozilla.ide.ui.extras,org.eclipse.atf.mozilla.ide.ui.extras,HEAD"/>
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.atf/components/plugins/org.eclipse.atf.mozilla.swt.browser,org.eclipse.atf.mozilla.swt.browser,HEAD"/>
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.atf/components/plugins/org.eclipse.atf.compatibility.jsdt,org.eclipse.atf.compatibility.jsdt,HEAD"/>
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.atf/components/tests/org.eclipse.atf.debug.test,org.eclipse.atf.debug.test,HEAD"/>
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.atf/components/tests/org.eclipse.atf.mozilla.ide.core.test,org.eclipse.atf.mozilla.ide.core.test,HEAD"/>
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.atf/components/tests/org.eclipse.atf.mozilla.ide.ui.test,org.eclipse.atf.mozilla.ide.ui.test,HEAD"/>
+  <project reference="1.0,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,org.eclipse.atf/components/releng/org.eclipse.atf.releng,org.eclipse.atf.releng,HEAD"/>
+
+</provider>
+</psf>

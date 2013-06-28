@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+	<!-- JSDT container initializer -->
+	
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            targetID="org.eclipse.wst.jsdt.ui.CompilationUnitEditor"
+            id="org.eclipse.wst.jsdt.debug.CompilationUnitEditor.BreakpointRulerActions">
+         <action
+               label="%AddBreakpoint.label"
+               class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate" 
+               actionID="RulerDoubleClick"
+               id="org.eclipse.wst.jsdt.debug.ui.actions.ManageBreakpointRulerAction">
+         </action>
+      </editorContribution>
+      <editorContribution
+            targetID="org.eclipse.wst.jsdt.ui.ClassFileEditor"
+            id="org.eclipse.wst.jsdt.debug.ClassFileEditor.BreakpointRulerActions">
+         <action
+               label="%AddBreakpoint.label"
+               class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate" 
+               actionID="RulerDoubleClick"
+               id="org.eclipse.wst.jsdt.debug.ui.actions.ManageBreakpointRulerAction">
+         </action>
+      </editorContribution>
+   </extension> 
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+
+      <viewerContribution
+            targetID="#ReadOnlyJavaScriptRulerContext"
+            id="org.eclipse.atf.jsdt.debug.ui.ClassFileRulerPopupActions">
+         <action
+               class="org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+               id="org.eclipse.atf.jsdt.debug.ui.actions.EnableDisableBreakpointRulerActionDelegate"
+               label="Disable Breakpoint"
+               menubarPath="debug">
+         </action>
+         <action
+               class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+               id="org.eclipse.atf.jsdt.debug.ui.actions.BreakpointRulerActionDelegate"
+               label="Toggle &amp;Breakpoint"
+               menubarPath="debug">
+         </action>
+      </viewerContribution> 
+
+      <viewerContribution
+            targetID="#JavaScriptRulerContext"
+            id="org.eclipse.atf.jsdt.CompilationUnitRulerPopupActions">
+         <action
+               label="Disable Breakpoint"
+               class="org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+               menubarPath="debug"
+               id="org.eclipse.atf.jsdt.debug.ui.actions.EnableDisableBreakpointRulerActionDelegate">
+         </action>
+         <action
+               class="org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+               id="org.eclipse.atf.jsdt.debug.ui.actions.BreakpointRulerActionDelegate"
+               label="Toggle &amp;Breakpoint"
+               menubarPath="debug">
+         </action> 
+      </viewerContribution> 
+   </extension> 
+	
+		<extension point="org.eclipse.core.runtime.adapters">
+	         
+	     <!-- Adapters for retargettable actions -->
+	     	  <factory 
+	            class="org.eclipse.atf.compatibility.jsdt.debug.ui.actions.RetargettableActionAdapterFactory" 
+	            adaptableType="org.eclipse.wst.jsdt.internal.ui.javaeditor.CompilationUnitEditor">
+	            <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
+	         </factory>
+	         <factory 
+	            class="org.eclipse.atf.compatibility.jsdt.debug.ui.actions.RetargettableActionAdapterFactory" 
+	            adaptableType="org.eclipse.wst.jsdt.internal.ui.javaeditor.ClassFileEditor">
+	            <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
+	         </factory>         
+	         <factory 
+	            class="org.eclipse.atf.compatibility.jsdt.debug.ui.actions.RetargettableActionAdapterFactory" 
+	            adaptableType="org.eclipse.wst.jsdt.core.IMethod">
+	            <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
+	         </factory>         
+	         <factory 
+	            class="org.eclipse.atf.compatibility.jsdt.debug.ui.actions.RetargettableActionAdapterFactory" 
+	            adaptableType="org.eclipse.wst.jsdt.core.IField">
+	            <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
+	         </factory>         
+	      </extension> 
+
+<extension point="org.eclipse.wst.sse.ui.breakpoint">
+		<breakpointContribution id="org.eclipse.atf.compatibility.jsdt.debug.ui.providers">
+			<!-- 
+				<provider
+				extensions="js, html, jsp"
+				class="org.eclipse.atf.mozilla.ide.debug.ui.JSBreakpointProvider"
+				id="org.eclipse.atf.mozilla.ide.debug.ui.JSBreakpointProvider">
+				</provider>
+			-->
+			<provider
+				contentTypes="org.eclipse.wst.html.core.htmlsource"
+				class="org.eclipse.atf.compatibility.jsdt.debug.ui.JSBreakpointProvider"
+				id="org.eclipse.atf.compatibility.jsdt.debug.ui.JSBreakpointProvider.html" />
+			<provider
+				contentTypes="org.eclipse.wst.javascript.core.javascriptsource"
+				class="org.eclipse.atf.compatibility.jsdt.debug.ui.JSBreakpointProvider"
+				id="org.eclipse.atf.compatibility.jsdt.debug.ui.JSBreakpointProvider" />
+		</breakpointContribution>
+	</extension>
+</plugin>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+
+	<extension
+         point="org.eclipse.ui.views">
+     
+      <view
+      		category="org.eclipse.atf.mozilla.ide.ui.category"
+      		class="org.eclipse.atf.mozilla.ide.ui.compare.DOMCompareView"
+      		icon="icons/compare_view.gif"
+      		id="org.eclipse.atf.mozilla.ide.ui.views.compare"
+      		name="DOM Compare" />
+      
+   </extension>
+
+
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="org.eclipse.atf.mozilla.ide.ui.perspective">
+         
+         <viewShortcut id="org.eclipse.atf.mozilla.ide.ui.views.compare"/>
+         
+      </perspectiveExtension>
+   </extension>
+   
+	<extension
+   		point="org.eclipse.atf.mozilla.ide.ui.action" >
+   		<action 
+   			path="Options"
+   			icon="icons/snippets_view.gif"
+   			text="Add CSS Snippet"
+   			types="ELEMENT_NODE"
+   			class="org.eclipse.atf.mozilla.ide.ui.extras.actions.CSSSnippets" />
+   		<action 
+   			path="Edit"
+   			icon="icons/copy_edit_co.gif"
+   			text="Copy Node"
+   			types="ELEMENT_NODE"
+   			class="org.eclipse.atf.mozilla.ide.ui.extras.actions.CopyNodeAction" />
+   		<action 
+   			path="Edit"
+   			icon="icons/copy_edit_co.gif"
+   			text="Copy Node with CSS"
+   			types="ELEMENT_NODE"
+   			class="org.eclipse.atf.mozilla.ide.ui.extras.actions.CopyNodeWithStylesAction" />
+   		<action 
+   			path="Edit"
+   			icon="icons/paste_edit.gif"
+   			text="Paste Node"
+   			types="ELEMENT_NODE"
+   			class="org.eclipse.atf.mozilla.ide.ui.extras.actions.PasteNodeAction" />
+   		<action
+   			path="Edit"
+   			types="ELEMENT_NODE"
+   			text="Cut Node"
+   			icon="icons/cut_edit.gif"
+   			class="org.eclipse.atf.mozilla.ide.ui.extras.actions.CutNodeAction" />
+   		<action
+   			path="Edit"
+   			text="Delete Node"
+   			icon="icons/delete_edit.gif"
+   			class="org.eclipse.atf.mozilla.ide.ui.extras.actions.DeleteNodeAction" />
+   		<action
+   			path="Options"
+   			text="Compare Node"
+   			icon="icons/compare_view.gif"
+   			class="org.eclipse.atf.mozilla.ide.ui.extras.actions.AddCompareNode" />
+   		
+   </extension>
+</plugin>

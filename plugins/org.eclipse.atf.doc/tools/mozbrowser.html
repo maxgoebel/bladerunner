@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head><meta name="copyright" content="Copyright (c) IBM Corporation and others 2000, 2007. This page is made available under license. For full details see the LEGAL in the documentation book that contains this page." />
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <link href="../atfdocs.css" rel="STYLESHEET" CHARSET="ISO-8859-1" TYPE="text/css">
+  <title>Embedded Mozilla Browser</title>
+</head>
+<body>
+<h1>Embedded Mozilla Browser</h1>
+
+<p>The Embedded Mozilla Browser is the central piece of an effort to integrate
+the Mozilla Browser into Eclipse and use it as part of the Web development process.
+It shows up in Eclipse's editor area and contains a cross-platform Mozilla Browser
+widget. This component provides the basic functionality of a standalone Mozilla 
+installation as well as integration with other supporting Eclipse views.
+</p>
+
+<p>The Embedded Mozilla Browser editor communicates with a set of Browser Tools views,
+ such as the <a href="dominspect.html">DOM Inspector</a> view and the 
+<a href="browserconsole.html">Browser Console</a> view). These views and the Browser editor are
+aggregated by the Mozilla Perspective. To open the Mozilla Perspective, go to the
+<i>Windows</i> menu, select <i>Open Perspective</i>, <i>Other</i>. From the 
+<i>Select Perspective</i> dialog, select <i>Mozilla</i>.
+</p>
+
+<p>There are several ways of opening the Embedded Mozilla Browser.</p>
+<ul>
+	<li>Click on the toolbar button <img src="imgs/mozilla.png"> when in the Mozilla Perspective.</li>
+	<li>Run or Debug a Web Application using the <i>Run As/Run in Mozilla</i>
+	 or <i>Debug As/Debug in Mozilla</i> context menu, respectively. (More information
+	 under the individual AJAX Personalities section)</li>
+</ul>
+
+<p>The Browser has several features aside from the usual navigation components. Some of these
+features are:</p>
+
+<b>Ctrl-Click Selection</b><br>
+<img src="../screencaps/browserSelection.jpg">
+<p>This allows the developer to select a DOM Node by using the mouse and selecting 
+an area of the rendered page on the browser. To do this:
+</p>
+<ol>
+ <li>Enable <i>Ctrl-Click Selection</i> by pressing <img src="imgs/revealBySelection.gif"> located on the upper-right corner of the Browser.</li>
+ <li>Move the Mouse cursor over the page while holding down the Ctlr key (Cmd key for
+ Macs) and you will see a highlight border around  the rendered DOM Node.</li>
+ <li>Click on the mouse to broadcast the DOM Node as the selection to
+ all the Browser Tools views (i.e. <a href="dominspect.html">DOM Inspector</a>).</li>
+</ol>
+<br>
+
+<b>Clear the Browser's Cache</b>
+<ol>
+ <li>Click on the Browser's menu <img src="imgs/showMenu.gif"> located on the upper-right corner of the Browser.</li>
+ <li>Select the Clear Cache menu item.</li>
+</ol>
+<br>
+
+<b>Selection Path Bar</b><br>
+<img src="imgs/selectionBar.jpg">
+<p>This bar is located on the bottom edge of the Browser. It can be opened or closed by using the
+Browser's menu <img src="imgs/showMenu.gif"> located on the upper-right corner of the Browser.
+This bar shows the currently selected DOM Node in the form of a Path from the DOM Document root
+to itself. Each portion of the path is a link that causes the selection to change. This bar
+is also helpful to see what is going to be selected while doing a <i>Ctrl-Click Selection</i> by
+showing the developer what is the path to the DOM Node that is under the mouse cursor.
+</p>
+
+
+
+
+
+</body>
+</html>

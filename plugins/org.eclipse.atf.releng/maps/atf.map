@@ -1,0 +1,33 @@
+###############################################################################
+# Copyright (c) 2003-2009 by nexB, Inc. and others
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Eclipse Public License v1.0
+# which accompanies this distribution, and is available at
+# http://www.eclipse.org/legal/epl-v10.html
+# Contributors:
+#     nexB Corporation - initial API and implementation
+#     Zend Technologies Ltd. - ongoing enhancements
+#     JBoss by Red Hat - ongoing enhancements
+###############################################################################
+
+!*** features
+feature@org.eclipse.atf.feature=v201006041600,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,,org.eclipse.atf/components/features/org.eclipse.atf.feature
+feature@org.eclipse.atf.mozilla.ide.feature=v201006041600,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,,org.eclipse.atf/components/features/org.eclipse.atf.mozilla.ide.feature
+feature@org.eclipse.atf.test.feature=v200911201100,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,,org.eclipse.atf/components/features/org.eclipse.atf.test.feature
+
+!*** plugins
+plugin@org.eclipse.atf.doc=v201006041600,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,,org.eclipse.atf/components/plugins/org.eclipse.atf.doc
+plugin@org.eclipse.atf.mozilla.ide.core=v20101005-1000,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,,org.eclipse.atf/components/plugins/org.eclipse.atf.mozilla.ide.core
+plugin@org.eclipse.atf.mozilla.ide.debug=v20100720-1720,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,,org.eclipse.atf/components/plugins/org.eclipse.atf.mozilla.ide.debug
+plugin@org.eclipse.atf.mozilla.ide.debug.ui=v20110117-2133,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,,org.eclipse.atf/components/plugins/org.eclipse.atf.mozilla.ide.debug.ui
+plugin@org.eclipse.atf.mozilla.ide.ui=v20110812-1335,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,,org.eclipse.atf/components/plugins/org.eclipse.atf.mozilla.ide.ui
+plugin@org.eclipse.atf.mozilla.ide.ui.extras=v200909251120,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,,org.eclipse.atf/components/plugins/org.eclipse.atf.mozilla.ide.ui.extras
+fragment@org.eclipse.atf.mozilla.swt.browser=v200909041100,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,,org.eclipse.atf/components/plugins/org.eclipse.atf.mozilla.swt.browser
+plugin@org.eclipse.atf.compatibility.jsdt=v20110323-918,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,,org.eclipse.atf/components/plugins/org.eclipse.atf.compatibility.jsdt
+!*** tests
+plugin@org.eclipse.atf.debug.test=v200908211040,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,,org.eclipse.atf/components/tests/org.eclipse.atf.debug.test
+plugin@org.eclipse.atf.mozilla.ide.ui.test=v20110117-2133,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,,org.eclipse.atf/components/tests/org.eclipse.atf.mozilla.ide.ui.test
+plugin@org.eclipse.atf.mozilla.ide.core.test=v200909111100,:pserver:anonymous@dev.eclipse.org:/cvsroot/tools,,org.eclipse.atf/components/tests/org.eclipse.atf.mozilla.ide.core.test
+
+plugin@org.eclipse.test=v20080313,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,,org.eclipse.test
+fragment@org.eclipse.ant.optional.junit=v20070202,:pserver:anonymous@dev.eclipse.org:/cvsroot/eclipse,

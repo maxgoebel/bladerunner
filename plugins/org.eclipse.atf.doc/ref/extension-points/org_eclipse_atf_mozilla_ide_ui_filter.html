@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>request filter</title>
+<style>@import url("file:/D:/e-330/eclipse/plugins/org.eclipse.sdk_3.3.0.v20070613/book.css");</style>
+<style>@import url("file:/D:/e-330/eclipse/configuration/org.eclipse.osgi/bundles/142/1/.cp/schema.css");</style>
+</HEAD>
+<BODY>
+<H1><CENTER>request filter</CENTER></H1>
+<p></p>
+<h6 class=CaptionFigColumn id=header>Identifier: </h6>org.eclipse.atf.mozilla.ide.ui.filter<p></p>
+<h6 class=CaptionFigColumn id=header>Since: </h6>1.0
+<p></p>
+
+<p>
+<h6 class=CaptionFigColumn id=header>Description: </h6>This extension point allows filters to be declared that will be placed on the toolbar of the Request Monitor view.</p>
+<p><h6 class=CaptionFigColumn id=header>Configuration Markup:</h6></p>
+<p class=code id=dtd>&lt;!ELEMENT <a name="e.extension">extension</a> (<a href="#e.filter">filter</a>)&gt;</p>
+<p class=code id=dtd>&lt;!ATTLIST extension</p>
+<p class=code id=dtdAttlist>point&nbsp;CDATA #REQUIRED<p class=code id=dtdAttlist>id&nbsp;&nbsp;&nbsp;&nbsp;CDATA #IMPLIED<p class=code id=dtdAttlist>name&nbsp;&nbsp;CDATA #IMPLIED&gt;</p>
+<p></p>
+<ul class=ConfigMarkup id=attlistDesc>
+</ul>
+<br><p class=code id=dtd>&lt;!ELEMENT <a name="e.filter">filter</a> EMPTY&gt;</p>
+<p class=code id=dtd>&lt;!ATTLIST filter</p>
+<p class=code id=dtdAttlist>class&nbsp;&nbsp;&nbsp;CDATA #REQUIRED<p class=code id=dtdAttlist>tooltip&nbsp;CDATA #REQUIRED<p class=code id=dtdAttlist>icon&nbsp;&nbsp;&nbsp;&nbsp;CDATA #REQUIRED&gt;</p>
+<p></p>
+<ul class=ConfigMarkup id=attlistDesc>
+<li><b>class</b> - </li>
+<li><b>tooltip</b> - </li>
+<li><b>icon</b> - </li>
+</ul>
+<br><h6 class=CaptionFigColumn id=header>Examples: </h6><pre>
+<p class=code id=tag>&lt;extension
+     point=<p class=code id=cstring>&quot;org.eclipse.atf.mozilla.ide.ui.filter&quot;</p><p class=code id=tag>&gt;</p>
+     <p class=code id=tag>&lt;filter 
+       class=<p class=code id=cstring>&quot;org.eclipse.atf.mozilla.ide.ui.xhrmon.model.CSSFilter&quot;</p><p class=code id=tag>
+       tooltip=<p class=code id=cstring>&quot;Show CSS only.&quot;</p><p class=code id=tag>
+       icon=<p class=code id=cstring>&quot;icons/xhrmon/css_filter.gif&quot;</p><p class=code id=tag> /&gt;</p>
+<p class=code id=tag>&lt;/extension&gt;</p>
+</pre>
+<p></p>
+
+<h6 class=CaptionFigColumn id=header>API Information: </h6>The class specified must implement the org.eclipse.jface.viewers.ViewerFilter.
+<p></p>
+
+<h6 class=CaptionFigColumn id=header>Supplied Implementation: </h6>The current ATF contributes to this extension point for filtering Image, CSS, Javascript, and HTML requests.  These are found in the org.eclipse.mozilla.ide.ui.xhrmon.model package.
+<p></p>
+
+<br>
+<p class=note id=copyright>
+Copyright (c) 2006, 2007 IBM Corporation and others.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+Contributors:
+ IBM Corporation - initial API and implementation
+<p></p>
+
+</p>
+</BODY>
+</HTML>

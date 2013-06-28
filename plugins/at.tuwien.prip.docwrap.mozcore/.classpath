@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="at/tuwien/prip/mozcore/Gdk.java|at/tuwien/prip/mozcore/Gtk.java|at/tuwien/prip/mozcore/MozillaExecutor.java|at/tuwien/prip/mozcore/utils/CSSUtils.java" kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/jna-3.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/sevenzip.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/w3cextension.jar"/>
+	<classpathentry kind="lib" path="lib/w3chtml.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

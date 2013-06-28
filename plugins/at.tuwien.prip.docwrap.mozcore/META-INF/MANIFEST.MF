@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mozcore
+Bundle-SymbolicName: at.tuwien.prip.mozcore;singleton:=true
+Bundle-Version: 1.0.0
+Bundle-Vendor: PRIP Group, TU Wien
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: at.tuwien.prip.mozcore,
+ at.tuwien.prip.mozcore.exception,
+ at.tuwien.prip.mozcore.utils
+Require-Bundle: at.tuwien.prip.common;bundle-version="1.0.0",
+ mozdom4java;bundle-version="1.0.0",
+ org.eclipse.core.runtime;bundle-version="3.6.0",
+ org.eclipse.atf.mozilla.ide.core;bundle-version="0.3.0",
+ org.eclipse.atf.mozilla.ide.ui;bundle-version="0.3.0",
+ org.eclipse.swt,
+ org.mozilla.xpcom;bundle-version="1.9.1",
+ org.mozilla.xulrunner;bundle-version="1.9.1"
+Bundle-ClassPath: .

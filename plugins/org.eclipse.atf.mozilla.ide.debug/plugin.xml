@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension point="org.eclipse.debug.core.sourceLocators">
+	 <sourceLocator id="org.eclipse.atf.mozilla.ide.JSSourceLocator" class="org.eclipse.atf.mozilla.ide.debug.model.JSSourceLocator"
+		name="Mozilla JS Source Locator">
+	 </sourceLocator>
+	</extension>
+
+<!--  Breakpoint Types  -->
+	<extension
+         point="org.eclipse.debug.core.breakpoints">
+      <breakpoint
+            markerType="org.eclipse.atf.mozilla.ide.debug.JSLineBreakpointMarker"
+            class="org.eclipse.atf.mozilla.ide.debug.model.JSLineBreakpoint"
+            id="org.eclipse.atf.mozilla.ide.JSLineBreakpoint">
+      </breakpoint>
+      <breakpoint
+            class="org.eclipse.atf.mozilla.ide.debug.model.JSDebuggerKeywordBreakpoint"
+            id="org.eclipse.atf.mozilla.ide.debug.JSDebuggerKeywordBreakpoint"
+            markerType="org.eclipse.atf.mozilla.ide.debug.JSDebuggerKeywordBreakpointMarker">
+      </breakpoint>
+      <breakpoint
+            class="org.eclipse.atf.mozilla.ide.debug.model.JSErrorBreakpoint"
+            id="org.eclipse.atf.mozilla.ide.debug.JSErrorBreakpoint"
+            markerType="org.eclipse.atf.mozilla.ide.debug.JSErrorBreakpointMarker">
+      </breakpoint>
+      <breakpoint
+            class="org.eclipse.atf.mozilla.ide.debug.model.JSExceptionBreakpoint"
+            id="org.eclipse.atf.mozilla.ide.debug.JSExceptionBreakpoint"
+            markerType="org.eclipse.atf.mozilla.ide.debug.JSExceptionBreakpointMarker">
+      </breakpoint>
+      <breakpoint
+            class="org.eclipse.atf.mozilla.ide.debug.model.JSStartupBreakpoint"
+            id="org.eclipse.atf.mozilla.ide.debug.JSStartupBreakpoint"
+            markerType="org.eclipse.atf.mozilla.ide.debug.JSStartupBreakpointMarker">
+      </breakpoint>
+	</extension>
+	<extension
+         id="JSLineBreakpointMarker"
+         name="%breakpoint.label"
+         point="org.eclipse.core.resources.markers">
+      <super type="org.eclipse.debug.core.lineBreakpointMarker" />
+      <persistent value="true" />
+	</extension>
+ <extension
+       id="JSDebuggerKeywordBreakpointMarker"
+       name="JavaScript Debugger Keyword Breakpoint"
+       point="org.eclipse.core.resources.markers">
+    <persistent
+          value="true">
+    </persistent>
+    <super
+          type="org.eclipse.debug.core.breakpointMarker">
+    </super>
+ </extension>
+ <extension
+       id="JSErrorBreakpointMarker"
+       name="JavaScript Error Breakpoint"
+       point="org.eclipse.core.resources.markers">
+    <super
+          type="org.eclipse.debug.core.breakpointMarker">
+    </super>
+    <persistent
+          value="true">
+    </persistent>
+ </extension>
+ <extension
+       id="JSExceptionBreakpointMarker"
+       name="JavaScript Exception Breakpoint"
+       point="org.eclipse.core.resources.markers">
+    <super
+          type="org.eclipse.debug.core.breakpointMarker">
+    </super>
+    <persistent
+          value="true">
+    </persistent>
+ </extension>
+ <extension
+       id="JSStartupBreakpointMarker"
+       name="JavaScript Startup Breakpoint"
+       point="org.eclipse.core.resources.markers">
+    <super
+          type="org.eclipse.debug.core.breakpointMarker">
+    </super>
+    <persistent
+          value="true">
+    </persistent>
+ </extension>
+	
+	<!-- Preference Support (initializer)-->
+	<extension point="org.eclipse.core.runtime.preferences">
+		<initializer
+			class="org.eclipse.atf.mozilla.ide.debug.preferences.JSDebugPreferenceInitializer" />
+	</extension>
+</plugin>

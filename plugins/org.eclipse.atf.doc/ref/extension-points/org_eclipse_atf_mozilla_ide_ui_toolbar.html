@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Browser Toolbar</title>
+<style>@import url("file:/D:/e-330/eclipse/plugins/org.eclipse.sdk_3.3.0.v20070613/book.css");</style>
+<style>@import url("file:/D:/e-330/eclipse/configuration/org.eclipse.osgi/bundles/142/1/.cp/schema.css");</style>
+</HEAD>
+<BODY>
+<H1><CENTER>Browser Toolbar</CENTER></H1>
+<p></p>
+<h6 class=CaptionFigColumn id=header>Identifier: </h6>org.eclipse.atf.mozilla.ide.ui.toolbar<p></p>
+<h6 class=CaptionFigColumn id=header>Since: </h6>1.0
+<p></p>
+
+<p>
+<h6 class=CaptionFigColumn id=header>Description: </h6>This extension point allows toolbars to be contributed to the browser.</p>
+<p><h6 class=CaptionFigColumn id=header>Configuration Markup:</h6></p>
+<p class=code id=dtd>&lt;!ELEMENT <a name="e.extension">extension</a> (<a href="#e.toolbar">toolbar</a>)&gt;</p>
+<p class=code id=dtd>&lt;!ATTLIST extension</p>
+<p class=code id=dtdAttlist>point&nbsp;CDATA #REQUIRED<p class=code id=dtdAttlist>id&nbsp;&nbsp;&nbsp;&nbsp;CDATA #IMPLIED<p class=code id=dtdAttlist>name&nbsp;&nbsp;CDATA #IMPLIED&gt;</p>
+<p></p>
+<ul class=ConfigMarkup id=attlistDesc>
+</ul>
+<br><p class=code id=dtd>&lt;!ELEMENT <a name="e.toolbar">toolbar</a> EMPTY&gt;</p>
+<p class=code id=dtd>&lt;!ATTLIST toolbar</p>
+<p class=code id=dtdAttlist>class&nbsp;&nbsp;&nbsp;CDATA #REQUIRED<p class=code id=dtdAttlist>browser&nbsp;CDATA #REQUIRED<p class=code id=dtdAttlist>icon&nbsp;&nbsp;&nbsp;&nbsp;CDATA #IMPLIED<p class=code id=dtdAttlist>show&nbsp;&nbsp;&nbsp;&nbsp;(true | false) <p class=code id=dtdAttlist>name&nbsp;&nbsp;&nbsp;&nbsp;CDATA #REQUIRED&gt;</p>
+<p></p>
+<ul class=ConfigMarkup id=attlistDesc>
+<li><b>class</b> - </li>
+<li><b>browser</b> - </li>
+<li><b>icon</b> - </li>
+<li><b>show</b> - </li>
+<li><b>name</b> - </li>
+</ul>
+<br><h6 class=CaptionFigColumn id=header>Examples: </h6><pre>
+ <p class=code id=tag>&lt;extension
+     point=<p class=code id=cstring>&quot;org.eclipse.atf.mozilla.ide.ui.toolbar&quot;</p><p class=code id=tag> &gt;</p>
+     <p class=code id=tag>&lt;toolbar
+      browser=<p class=code id=cstring>&quot;Mozilla&quot;</p><p class=code id=tag>
+      class=<p class=code id=cstring>&quot;com.xyz.AjaxMetricsToolbar&quot;</p><p class=code id=tag>
+      name=<p class=code id=cstring>&quot;Ajax Metrics Bar&quot;</p><p class=code id=tag>
+      show=<p class=code id=cstring>&quot;true&quot;</p><p class=code id=tag> /&gt;</p>
+   <p class=code id=tag>&lt;/extension&gt;</p>   
+</pre>
+<p></p>
+
+<h6 class=CaptionFigColumn id=header>API Information: </h6>The specified class must extend org.eclipse.atf.mozilla.ide.ui.browser.toolbar.BrowserToolbar
+<p></p>
+
+<h6 class=CaptionFigColumn id=header>Supplied Implementation: </h6>ATF provides a selection path toolbar (DOMSelectionBar) that can be found in the org.eclipse.atf.mozilla.ide.ui.browser.toolbar package.
+<p></p>
+
+<br>
+<p class=note id=copyright>
+Copyright (c) 2006, 2007 IBM Corporation and others.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html
+Contributors:
+ IBM Corporation - initial API and implementation
+<p></p>
+
+</p>
+</BODY>
+</HTML>

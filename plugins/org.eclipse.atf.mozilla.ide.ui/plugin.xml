@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension-point id="filter" name="Filter Requests" schema="schema/filter.exsd"/>
+   <extension-point id="view" name="Browser View" schema="schema/view.exsd"/>
+   <extension-point id="action" name="DOM selection actions" schema="schema/action.exsd"/>
+   <extension-point id="toolbar" name="Browser Toolbar" schema="schema/toolbar.exsd"/>
+   
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.eclipse.atf.mozilla.ide.ui.browser.MozBrowserEditor"
+            icon="icons/internal_browser.gif"
+            id="org.eclipse.atf.mozilla.ide.ui.MozBrowserEditor"
+            name="Browser"
+            extensions="html, htm, xhtml"/>
+   </extension>
+   
+   <extension
+   		point="org.eclipse.atf.mozilla.ide.ui.toolbar" >
+   		<toolbar
+   			browser="Mozilla"
+   			class="org.eclipse.atf.mozilla.ide.ui.browser.toolbar.DOMSelectionBar"
+   			name="Selection Path Bar"
+   			show="true" />
+   </extension>   
+   
+   <extension 
+   		point="org.eclipse.atf.mozilla.ide.ui.view">
+   		<view 
+   			browser="Mozilla"
+   			type="org.eclipse.atf.mozilla.ide.ui.inspector.IDOMInspector"
+   			class="org.eclipse.atf.mozilla.ide.ui.inspector.DOMInspectorPage" />
+   		<view 
+   			browser="Mozilla"
+   			type="org.eclipse.atf.mozilla.ide.ui.source.IDOMSourcePage"
+   			class="org.eclipse.atf.mozilla.ide.ui.source.DOMSourcePage" />
+   		<view 
+   			browser="Mozilla"
+   			type="org.eclipse.atf.mozilla.ide.ui.css.ICSSPage"
+   			class="org.eclipse.atf.mozilla.ide.ui.css.CSSPage" />
+   		<view 
+   			browser="Mozilla"
+   			type="org.eclipse.atf.mozilla.ide.ui.netmon.INetworkMonitor"
+   			class="org.eclipse.atf.mozilla.ide.ui.netmon.NetworkMonitorPage" />
+   		
+   		<view
+   			browser="Mozilla"
+   			type="org.eclipse.atf.mozilla.ide.ui.jseval.IJSEvalPage"
+   			class="org.eclipse.atf.mozilla.ide.ui.jseval.JSEvalPage" />
+   			
+   		<view
+   			browser="Mozilla"
+   			type="org.eclipse.atf.mozilla.ide.ui.domwatcher.IDOMWatcherPage"
+   			class="org.eclipse.atf.mozilla.ide.ui.domwatcher.DOMWatcherPage" />
+   			
+   </extension>
+   
+   <extension
+   		point="org.eclipse.atf.mozilla.ide.ui.filter">
+   		<filter 
+   			class="org.eclipse.atf.mozilla.ide.ui.netmon.filter.CSSFilter"
+   			tooltip="Show CSS only."
+   			icon="icons/xhrmon/css_filter.gif" />
+   		<filter 
+   			class="org.eclipse.atf.mozilla.ide.ui.netmon.filter.JavascriptFilter"
+   			tooltip="Show Javascript only."
+   			icon="icons/xhrmon/js_filter.gif" />
+   		<filter 
+   			class="org.eclipse.atf.mozilla.ide.ui.netmon.filter.ImageFilter"
+   			tooltip="Show Images only."
+   			icon="icons/xhrmon/image_filter.gif" />
+   		<filter 
+   			class="org.eclipse.atf.mozilla.ide.ui.netmon.filter.MarkupFilter"
+   			tooltip="Show HTML/XHTML/XML only."
+   			icon="icons/xhrmon/html_filter.gif"	/>
+   </extension>
+
+	<extension
+   		point="org.eclipse.atf.mozilla.ide.ui.action" >
+   		<action
+   			path="Options"
+   			types="ELEMENT_NODE DOCUMENT_NODE"
+   			text="Evaluate Node"
+   			icon="icons/jsEval/jsEval.gif"
+   			class="org.eclipse.atf.mozilla.ide.ui.jseval.EvalDomSelectionAction" />
+   		<!--
+   		<action
+   			path="Options"
+   			text="Watch Node"
+   			icon="icons/watcher/domwatcher.gif"
+   			class="org.eclipse.atf.mozilla.ide.ui.domwatcher.WatchNodeAction" />
+   		-->
+   </extension>
+   
+	<extension
+         point="org.eclipse.ui.views">
+      <category
+            id="org.eclipse.atf.mozilla.ide.ui.category"
+            name="Web Browser Tools"/>
+      <view
+            category="org.eclipse.atf.mozilla.ide.ui.category"
+            class="org.eclipse.atf.mozilla.ide.ui.console.JavaScriptConsoleView"
+            icon="icons/console/jsconsole.gif"
+            id="org.eclipse.atf.mozilla.ide.ui.views.console"
+            name="Browser Console"/>
+            
+      <view
+            category="org.eclipse.atf.mozilla.ide.ui.category"
+            class="org.eclipse.atf.mozilla.ide.ui.inspector.DOMInspectorView"
+            icon="icons/inspector/inspector.gif"
+            id="org.eclipse.atf.mozilla.ide.ui.views.inspector"
+            name="DOM Inspector"/>
+            
+      <view
+            category="org.eclipse.atf.mozilla.ide.ui.category"
+            class="org.eclipse.atf.mozilla.ide.ui.netmon.NetworkMonitorView"
+            icon="icons/xhrmon/xhrmon.gif"
+            id="org.eclipse.atf.mozilla.ide.ui.views.netmon"
+            name="Request Monitor"/>
+            
+      <view
+            category="org.eclipse.atf.mozilla.ide.ui.category"
+            class="org.eclipse.atf.mozilla.ide.ui.source.DOMSourceView"
+            icon="icons/source/domsource.gif"
+            id="org.eclipse.atf.mozilla.ide.ui.views.domsource"
+            name="DOM Source"/>
+      <view
+            category="org.eclipse.atf.mozilla.ide.ui.category"
+            class="org.eclipse.atf.mozilla.ide.ui.css.CSSView"
+            icon="icons/css/cssinspector.gif"
+            id="org.eclipse.atf.mozilla.ide.ui.views.css"
+            name="CSS"/>
+            
+      <view
+      			category="org.eclipse.atf.mozilla.ide.ui.category"
+    	  		class="org.eclipse.atf.mozilla.ide.ui.jseval.JSEvalView"
+    	  		icon="icons/jsEval/jsEval.gif"
+    	  		id="org.eclipse.atf.mozilla.ide.ui.views.jseval"
+    	  		name="JavaScript" />
+      		
+      <view
+      			category="org.eclipse.atf.mozilla.ide.ui.category"
+      			class="org.eclipse.atf.mozilla.ide.ui.domwatcher.DOMWatcherView"
+      			icon="icons/watcher/domwatcher.gif"
+      			id="org.eclipse.atf.mozilla.ide.ui.views.domwatcher"
+      			name="DOM Watcher" />
+   </extension>
+   
+   <extension point="org.eclipse.ui.perspectives">
+	   	<perspective
+	       	id="org.eclipse.atf.mozilla.ide.ui.perspective"
+	       	name="Web Browser Tools"
+	       	class="org.eclipse.atf.mozilla.ide.ui.perspective.MozillaPerspective"
+	       	icon="icons/internal_browser.gif"> 
+	   	</perspective>
+   	</extension>
+   	
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.eclipse.atf.mozilla.ide.ui.actionset"
+            label="Mozilla IDE ActionSet">
+         <action
+               class="org.eclipse.atf.mozilla.ide.ui.browser.OpenMozBrowserEditorAction"
+               icon="icons/internal_browser.gif"
+               id="org.eclipse.atf.mozilla.ide.ui.actions.openMozBrowser"
+               label="Open Browser"
+               style="push"
+               toolbarPath="Normal/MozActions"
+               tooltip="Open a URL on Mozilla Browser"/>
+      </actionSet>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="org.eclipse.atf.mozilla.ide.ui.perspective">
+         <actionSet id="org.eclipse.atf.mozilla.ide.ui.actionset"/>
+         <actionSet id="org.eclipse.debug.ui.launchActionSet"/>
+         
+         <viewShortcut id="org.eclipse.atf.mozilla.ide.ui.views.console"/>
+         <viewShortcut id="org.eclipse.atf.mozilla.ide.ui.views.inspector"/>
+         <viewShortcut id="org.eclipse.atf.mozilla.ide.ui.views.domsource"/>
+         <viewShortcut id="org.eclipse.atf.mozilla.ide.ui.views.netmon"/>
+         <viewShortcut id="org.eclipse.atf.mozilla.ide.ui.views.css"/>
+         <viewShortcut id="org.eclipse.atf.mozilla.ide.ui.views.jseval"/>
+         <viewShortcut id="org.eclipse.atf.mozilla.ide.ui.views.domwatcher"/>
+         
+         
+         <perspectiveShortcut id="org.eclipse.ui.atf.webDevPerspective"/>
+         <perspectiveShortcut id="org.eclipse.debug.ui.DebugPerspective"/>
+         <perspectiveShortcut id="org.eclipse.ui.resourcePerspective"/>
+         <perspectiveShortcut id="org.eclipse.jst.j2ee.J2EEPerspective"/>
+         
+         <view id="org.eclipse.atf.mozilla.ide.ui.views.jseval"
+						relative="org.eclipse.atf.mozilla.ide.ui.views.console"
+						relationship="stack"/>
+				 
+				 <view id="org.eclipse.atf.mozilla.ide.ui.views.domwatcher"
+						relative="org.eclipse.atf.mozilla.ide.ui.views.console"
+						relationship="stack"/>
+         
+      </perspectiveExtension>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="org.eclipse.ui.atf.webDevPerspective">
+         <actionSet id="org.eclipse.atf.mozilla.ide.ui.actionset"/>
+         
+         <perspectiveShortcut id="org.eclipse.atf.mozilla.ide.ui.perspective"/>
+      </perspectiveExtension>
+   </extension>
+  
+   <!-- This Memento is used to save the URL used to open the Browser Editor -->   
+   <extension
+         point="org.eclipse.ui.elementFactories">
+      <factory
+            class="org.eclipse.atf.mozilla.ide.ui.browser.MozBrowserEditorPesistanceSuport"
+            id="org.eclipse.atf.mozilla.ide.ui.browser.memento"/>
+   </extension>
+
+
+	<!-- Browser Preference Page -->
+	<extension
+      point = "org.eclipse.ui.preferencePages">
+      <page
+         id="org.eclipse.atf.mozilla.ide.preferences"
+         class="org.eclipse.atf.mozilla.ide.ui.preferences.BrowserPreferencePage"
+         name="Browser"
+         category="org.eclipse.atf.preferences.ATF">
+      </page>
+   </extension>
+ <extension
+       point="org.eclipse.ui.browserSupport">
+    <support
+          class="org.eclipse.atf.mozilla.ide.ui.internal.browser.support.WorkbenchBrowserSupport"
+          default="false">
+    </support>
+ </extension>
+</plugin>

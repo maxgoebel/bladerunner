@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ATF Mozilla IDE Core Plugin (Incubation)
+Bundle-SymbolicName: org.eclipse.atf.mozilla.ide.core;singleton:=true
+Bundle-Version: 0.3.0.qualifier
+Bundle-Activator: org.eclipse.atf.mozilla.ide.core.MozideCorePlugin
+Bundle-Vendor: eclipse.org
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.jface;bundle-version="3.5.0",
+ mozdom4java;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Export-Package: org.eclipse.atf.mozilla.ide.common,
+ org.eclipse.atf.mozilla.ide.core,
+ org.eclipse.atf.mozilla.ide.core.util,
+ org.eclipse.atf.mozilla.ide.events,
+ org.eclipse.atf.mozilla.ide.network,
+ org.eclipse.atf.mozilla.ide.source
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

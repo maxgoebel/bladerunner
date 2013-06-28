@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="at/tuwien/prip/common/datastructures/TupleField.java|at/tuwien/prip/common/utils/file/FileManager.java|at/tuwien/prip/common/utils/file/LocationMapper.java|at/tuwien/prip/common/utils/XMLUtilities.java|at/tuwien/prip/common/utils/CSVUtils.java" kind="src" path="src"/>
+	<classpathentry exported="true" kind="lib" path="lib/jakarta-log4j-1.2.6.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry exported="true" kind="lib" path="lib/trove.jar"/>
+	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
