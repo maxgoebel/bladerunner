@@ -86,7 +86,7 @@ ISelectionChangedListener
 	 * 
 	 * @param component
 	 */
-	public void registerComponent(Object component) 
+	public void registerComponent(ISelectionChangedListener component) 
 	{
 		if (component instanceof ISelectionChangedListener) {
 			addSelectionChangedListener((ISelectionChangedListener) component);

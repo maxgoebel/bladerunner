@@ -513,6 +513,7 @@ IModelChangedListener
 		data.horizontalSpan = 1;
 		data.grabExcessHorizontalSpace = true;
 		combo1.setLayoutData(data);
+		combo1.add("Selection");
 		combo1.add("Table");
 		type = "TABLE";
 
@@ -545,8 +546,19 @@ IModelChangedListener
 			{
 				String string = combo1.getItem(combo1.getSelectionIndex());
 				type = string;
-				
-				if ("Table".equals(string)) 
+
+				if ("Selection".equals(string))
+				{
+
+					combo2.setEnabled(true);
+					combo2.removeAll();
+					combo2.add("Extraction");
+					combo2.add("Label");
+					combo2.select(0);
+
+					createSelectionButton.setEnabled(true);
+				}
+				else if ("Table".equals(string)) 
 				{
 					combo2.setEnabled(true);
 					combo2.removeAll();

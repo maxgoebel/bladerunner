@@ -81,8 +81,11 @@ import com.sun.pdfview.PDFPage;
  * @author mcg <mcgoebel@gmail.com>
  * @date Oct 1, 2011
  */
-public class PDFViewerSWT extends EditorPart implements ISelectionProvider,
-		IDocumentUpdateListener {
+public class PDFViewerSWT extends EditorPart
+implements ISelectionProvider,
+IDocumentUpdateListener,
+ISelectionChangedListener
+{
 	private int currentPage = 1, maxPage = 1;
 
 	public static PDFPage page = null;
@@ -617,7 +620,7 @@ public class PDFViewerSWT extends EditorPart implements ISelectionProvider,
 							focusRectangle.width, 
 							focusRectangle.height);
 					
-					double scale = we.documentControl.getDocModel().getScale();
+//					double scale = we.documentControl.getDocModel().getScale();
 					int pageNum = we.documentControl.getDocModel().getPageNum();
 					PdfBenchmarkDocument document = 
 						(PdfBenchmarkDocument) we.documentControl.getDocModel().getDocument();
@@ -667,6 +670,12 @@ public class PDFViewerSWT extends EditorPart implements ISelectionProvider,
 
 	public SWTImageCanvas getCanvas() {
 		return canvas;
+	}
+
+	@Override
+	public void selectionChanged(SelectionChangedEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }// PDFViewerSWT

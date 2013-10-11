@@ -36,6 +36,7 @@ import at.tuwien.prip.model.project.selection.blade.PDFInstruction;
 import at.tuwien.prip.model.project.selection.blade.PdfSelection;
 import at.tuwien.prip.model.project.selection.blade.RegionSelection;
 import at.tuwien.prip.model.project.selection.blade.SectionSelection;
+import at.tuwien.prip.model.project.selection.blade.SelectionContainer;
 import at.tuwien.prip.model.project.selection.blade.SemanticSelection;
 import at.tuwien.prip.model.project.selection.blade.TableCell;
 import at.tuwien.prip.model.project.selection.blade.TableColumnSelection;
@@ -195,7 +196,13 @@ public class AnnotationViewContentProvider implements ITreeContentProvider {
 			return ListUtils
 					.toArray(selection.getPages(), AnnotationPage.class);
 		} 
-
+		else if (parentElement instanceof SelectionContainer)
+		{
+			SelectionContainer selection = (SelectionContainer) parentElement;
+			return ListUtils
+					.toArray(selection.getSelections(), AbstractSelection.class);
+		} 
+		
 		return null;
 	}
 
@@ -301,6 +308,10 @@ public class AnnotationViewContentProvider implements ITreeContentProvider {
 		else if (element instanceof SemanticSelection)
 		{
 			return true;
+		}
+		else if (element instanceof SelectionContainer)
+		{
+			return ((SelectionContainer) element).getSelections().size()>0;
 		}
 		return false;
 	}

@@ -15,6 +15,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
 import at.tuwien.dbai.bladeRunner.Activator;
+import at.tuwien.dbai.bladeRunner.utils.TextUtils;
+import at.tuwien.prip.common.utils.StringUtils;
 import at.tuwien.prip.model.project.document.benchmark.Benchmark;
 import at.tuwien.prip.model.project.document.benchmark.BenchmarkDocument;
 import at.tuwien.prip.model.project.document.benchmark.HTMLBenchmarkDocument;
@@ -66,7 +68,8 @@ public class BenchmarkLabelProvider extends LabelProvider {
 			return ((Benchmark) element).getName();
 		}
 		if (element instanceof BenchmarkDocument) {
-			return (((BenchmarkDocument) element).getFileName());
+			String name = StringUtils.trimTo(((BenchmarkDocument) element).getFileName(), 58);
+			return name;
 		}
 		return super.getText(element);
 	}

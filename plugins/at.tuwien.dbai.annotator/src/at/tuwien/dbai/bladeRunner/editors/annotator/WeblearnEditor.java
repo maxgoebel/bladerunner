@@ -58,29 +58,31 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import at.tuwien.dbai.bladeRunner.control.DocumentController;
 import at.tuwien.dbai.bladeRunner.control.DocumentUpdate;
+import at.tuwien.dbai.bladeRunner.control.DocumentUpdate.UpdateType;
 import at.tuwien.dbai.bladeRunner.control.DocumentUpdateEvent;
 import at.tuwien.dbai.bladeRunner.control.IDOMDocumentListener;
 import at.tuwien.dbai.bladeRunner.control.IDocumentUpdateListener;
 import at.tuwien.dbai.bladeRunner.control.IModelChangedListener;
 import at.tuwien.dbai.bladeRunner.control.ModelChangedEvent;
-import at.tuwien.dbai.bladeRunner.control.DocumentUpdate.UpdateType;
 import at.tuwien.dbai.bladeRunner.editors.AnnotatorEditor;
 import at.tuwien.dbai.bladeRunner.utils.BrowserMonitor;
 import at.tuwien.dbai.bladeRunner.utils.DOMUtils;
 import at.tuwien.dbai.bladeRunner.utils.DocumentGraphFactory;
 import at.tuwien.dbai.bladeRunner.utils.SelectionBox2;
+import at.tuwien.dbai.bladeRunner.utils.XPathBridge;
 import at.tuwien.dbai.bladeRunner.views.SelectionImageView;
 import at.tuwien.dbai.bladeRunner.views.bench.BenchmarkNavigatorView;
+import at.tuwien.prip.common.exceptions.XPathSyntaxException;
 import at.tuwien.prip.common.log.ErrorDump;
 import at.tuwien.prip.common.utils.SimpleTimer;
 import at.tuwien.prip.model.graph.ISegmentGraph;
 import at.tuwien.prip.model.project.document.DocumentFormat;
 import at.tuwien.prip.model.project.document.DocumentModel;
-import at.tuwien.prip.model.project.document.IDocument;
 import at.tuwien.prip.model.project.document.benchmark.HTMLBenchmarkDocument;
 import at.tuwien.prip.model.project.document.html.HTMLDocument;
+import at.tuwien.prip.model.project.selection.NodeSelection;
+import at.tuwien.prip.model.utils.DOMHelper;
 import at.tuwien.prip.mozcore.NodeFactory;
 import at.tuwien.prip.mozcore.utils.CSSException;
 import at.tuwien.prip.mozcore.utils.MozCssUtils;
@@ -238,7 +240,7 @@ IModelChangedListener
 
 	@Override
 	public String getTitle() {
-		return "Document View";
+		return "HTML View";
 	}
 
 	@Override
@@ -258,32 +260,10 @@ IModelChangedListener
 
 		super.createPartControl(parent);
 		
-//		parent.setLayout(new GridLayout(1, true));
-		
-		//add a top panel
-//		Composite panel = new Composite(parent, SWT.NONE);
-//		GridLayout layout = new GridLayout(1, true);
-//		panel.setLayout(layout);
-		GridData data = new GridData();
-//		data.grabExcessHorizontalSpace = true;
-//		data.heightHint = 50;
-//		panel.setLayoutData(data);
-		
 		//add browser
-//		createBrowserPage(parent);
 		getMozillaBrowser().setJavascriptEnabled(false); //speed...
 		setPartName("Document View");
 
-//		data = new GridData();
-//		data.grabExcessHorizontalSpace = true;
-//		data.grabExcessVerticalSpace = true;
-//		browser.setLayoutData(data);
-		
-		//add horizontal bar
-//		parent.setLayout(new RowLayout(SWT.HORIZONTAL));
-		
-
-		
 		browser.addMouseWheelListener(new MouseWheelListener()
 		{
 			@Override
@@ -293,6 +273,20 @@ IModelChangedListener
 				{
 					zoomLevel += e.count/2;
 					setZoom(zoomLevel);
+				}
+				else if ((e.stateMask & SWT.SHIFT) == SWT.SHIFT)
+				{
+					if (selection!=null)
+					{
+						nsIDOMNode node = highlightNode;
+						if (node!=null && node.getParentNode()!=null)
+						{				
+//							selection.setSelectedNode(node.getParentNode());
+							selectionBox.flash( 
+									(nsIDOMElement)node.getParentNode().queryInterface(
+											nsIDOMElement.NS_IDOMELEMENT_IID) );
+						}
+					}
 				}
 			}
 		});
@@ -320,45 +314,8 @@ IModelChangedListener
 			}
 		});
 
-		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-		if (page!=null)
-		{
-//			IViewReference ref = page.findViewReference(AnnotationView.ID);
-//			if (ref!=null)
-//			{
-//				IViewPart viewPart = ref.getView(true);
-//				if (viewPart instanceof AnnotationView)
-//				{
-//					AnnotationView annotationView = (AnnotationView) viewPart;
-//					DocWrapController.registerForSelection(annotationView);
-//				}
-//			}
-//			ref = page.findViewReference(PatternViewClassic.ID);
-//			if (ref!=null)
-//			{
-//				IViewPart viewPart = ref.getView(true);
-//				if (viewPart instanceof PatternViewClassic)
-//				{
-//					PatternViewClassic patternViewClassic = (PatternViewClassic) viewPart;
-//					DocWrapController.registerForSelection(patternViewClassic);
-//				}
-//			}
-//			ref = page.findViewReference(PatternViewZest.ID);
-//			if (ref!=null)
-//			{
-//				IViewPart viewPart = ref.getView(true);
-//				if (viewPart instanceof PatternViewZest)
-//				{
-//					PatternViewZest patternViewZest = (PatternViewZest) viewPart;
-//					DocWrapController.registerForSelection(patternViewZest);
-//				}
-//			}
-		}
-
 		createActions();
 		contributeActions();
-//		navBar.setVisible(false);
-//		navBar.addExtensionAction( clickSelectAction );
 	}
 
 	private void contributeActions()
@@ -415,11 +372,14 @@ IModelChangedListener
 	protected void changeSelection(nsIDOMNode selectedNode)
 	{
 		if (selectedNode==null)
-		{
 			return;
-		}
-
-		IStructuredSelection sel = new StructuredSelection(selectedNode);
+		
+		//send XPath
+		Node node = NodeFactory.getNodeInstance(selectedNode);
+		String xpath = DOMHelper.XPath.getExactXPath(node);
+		XPathBridge bridge = new XPathBridge(xpath, isCtrlKey());
+		
+		IStructuredSelection sel = new StructuredSelection(bridge);
 
 		final SelectionChangedEvent event = new SelectionChangedEvent(this, sel);
 		Object[] listeners = selectionChangedListeners.getListeners();
@@ -613,7 +573,6 @@ IModelChangedListener
 	 * @date Jan 29, 2011
 	 */
 	public class WLMozBrowserListener extends MozillaBrowserListener
-//	implements IWebBrowser
 	{
 
 		WeblearnEditor parent;
@@ -809,19 +768,6 @@ IModelChangedListener
 		}
 	}
 
-	public HTMLDocument getCurrentDocument () {
-//		return (HTMLDocument) we.getCurrentDocument();
-		return null;
-	}
-
-//	public void removeDOMNodeSelectionChangedListener (ExampleListener listener) {
-//		selectionChangedListeners.remove(listener);
-//	}
-
-//	public void addDOMNodeSelectionChangedListener(ExampleListener listener) {
-//		selectionChangedListeners.add(listener);
-//	}
-
 	public void removeDOMDocumentListener (IDOMDocumentListener listener) {
 		if (documentListeners.contains(listener)) {
 			documentListeners.remove(listener);
@@ -963,36 +909,42 @@ IModelChangedListener
 		if (selection instanceof DOMNodeSelection)
 		{
 			DOMNodeSelection domSelection = (DOMNodeSelection) selection;
-			IDocument document = DocumentController.docModel.getDocument();
+//			IDocument document = DocumentController.docModel.getDocument();
 
 			nsIDOMNode nsIDOMNode = domSelection.getSelectedNode();
 			Node node = NodeFactory.getNodeInstance(nsIDOMNode);
-//			String nodeURI = node.getOwnerDocument().getBaseURI();
-			
-//			if (!nodeURI.equalsIgnoreCase(document.getUri()))
-//			{
-////				System.out.println();
-////				return;
-//			}
+			String xpath = DOMHelper.XPath.getExactXPath(node);
+			XPathBridge bridge = new XPathBridge(xpath, isCtrlKey());
+			StructuredSelection ssel = new StructuredSelection(bridge);
 			ctrlKey = isCtrl();
+			we.selectionControl.setSelection(ssel);
+		}
+		else if (selection instanceof StructuredSelection)
+		{
+			StructuredSelection ssel = (StructuredSelection) selection;
+			Object obj = ssel.getFirstElement();
+			if (obj instanceof XPathBridge)
+			{
+				XPathBridge bridge = (XPathBridge) obj;
+				HTMLBenchmarkDocument document = (HTMLBenchmarkDocument) we.getActiveDocument();
+				Document dom = document.getCachedJavaDOM();
 
-//			HTMLDocument doc = null;//(HTMLDocument) we.getCurrentDocument();
-//			NodeSelection nsel = new NodeSelection(node, doc.getCachedJavaDOM());
-//			NodeExample example = new NodeExample(nsel, ctrlKey?BinaryClass.NEGATIVE:BinaryClass.POSITIVE);
-
-
-//			final IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-//			IPerspectiveDescriptor activePerspective = workbenchWindow.getActivePage().getPerspective();
-//			if (activePerspective.getId().equals(WrapperPerspective.ID))
-//			{
-				//if we are in the wrapper perspective, add example to learner
-//				we.getLearningFilterControl().addExample(document, example, !isCtrlKey());
-//			}
-//			else
-//			{
-				//else, add example to annotation view
-//				
-//			}
+				Node input = dom.getDocumentElement();
+				Node node;
+				try {
+					node = DOMHelper.XPath.evaluateXPathFirst(input, bridge.getPath());
+					if (node!=null)
+						blinkElement((Element) node);
+				} catch (XPathSyntaxException e) {
+					e.printStackTrace();
+				}
+			}
+			else if (obj instanceof NodeSelection)
+			{
+				Node node = ((NodeSelection) obj).getSelectedNode();
+				if (node!=null)
+					blinkElement((Element) node);
+			}
 		}
 	}
 
@@ -1046,10 +998,7 @@ IModelChangedListener
 
 	@Override
 	public void modelChanged(ModelChangedEvent event) {
-		
-		goToURL("about:blank");
-		System.out.println();
-		
+		goToURL("about:blank");		
 	}
 
 }

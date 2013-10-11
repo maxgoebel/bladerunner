@@ -23,6 +23,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
@@ -67,7 +68,8 @@ import at.tuwien.prip.model.project.document.benchmark.PdfBenchmarkDocument;
 public class AnnotatorEditor extends BaseEditor 
 implements 
 IMenuListener,
-IDocumentUpdateListener
+IDocumentUpdateListener,
+ISelectionChangedListener
 {
 	public static String ID = "at.tuwien.dbai.bladeRunner.wrapperEditor";
 
@@ -215,7 +217,7 @@ IDocumentUpdateListener
 			}
 		}
 
-		setPageText(0, "Document View");
+		setPageText(0, "Layout View");
 		setActivePage(0);
 	}
 
@@ -266,9 +268,9 @@ IDocumentUpdateListener
 	@Override
 	protected void createPages()
 	{
-		createPage1();
 		createPage2();
 		createPage3();
+		createPage1();
 		
 		setPartName("Loading...");
 	}
@@ -351,6 +353,8 @@ IDocumentUpdateListener
 			{
 				mozInput = new MozBrowserEditorInput("about:blank");
 			}
+			
+			selectionControl.registerComponent(webEditor);
 			
 			int index = addPage(webEditor, mozInput);
 			setPageText(index, webEditor.getTitle());
@@ -530,6 +534,12 @@ IDocumentUpdateListener
 	public void resourceChanged(IResourceChangeEvent event) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void selectionChanged(SelectionChangedEvent event) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }// WrapperEditor

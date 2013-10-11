@@ -19,6 +19,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
@@ -45,6 +46,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
@@ -61,17 +63,20 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 import at.tuwien.dbai.bladeRunner.Activator;
 import at.tuwien.dbai.bladeRunner.DocWrapUIUtils;
 import at.tuwien.dbai.bladeRunner.control.DocumentController;
 import at.tuwien.dbai.bladeRunner.control.DocumentUpdate;
+import at.tuwien.dbai.bladeRunner.control.DocumentUpdate.UpdateType;
 import at.tuwien.dbai.bladeRunner.control.IModelChangedListener;
 import at.tuwien.dbai.bladeRunner.control.ModelChangedEvent;
-import at.tuwien.dbai.bladeRunner.control.DocumentUpdate.UpdateType;
 import at.tuwien.dbai.bladeRunner.editors.AnnotatorEditor;
 import at.tuwien.dbai.bladeRunner.editors.annotator.DocWrapEditor;
 import at.tuwien.dbai.bladeRunner.utils.ModelUtils2;
+import at.tuwien.dbai.bladeRunner.utils.XPathBridge;
 import at.tuwien.dbai.bladeRunner.utils.benchmark.DiademBenchmarkEngine;
 import at.tuwien.dbai.bladeRunner.views.BenchmarkEditorInput;
 import at.tuwien.dbai.bladeRunner.views.anno.AnnotationViewContentProvider;
@@ -79,6 +84,7 @@ import at.tuwien.dbai.bladeRunner.views.anno.AnnotationViewContentProviderGT;
 import at.tuwien.dbai.bladeRunner.views.anno.AnnotationViewLabelProvider;
 import at.tuwien.prip.common.datastructures.HashMapList;
 import at.tuwien.prip.common.datastructures.MapList;
+import at.tuwien.prip.common.exceptions.XPathSyntaxException;
 import at.tuwien.prip.common.log.ErrorDump;
 import at.tuwien.prip.common.utils.ListUtils;
 import at.tuwien.prip.model.document.segments.CharSegment;
@@ -108,6 +114,7 @@ import at.tuwien.prip.model.project.selection.AbstractSelection;
 import at.tuwien.prip.model.project.selection.ExtractionResult;
 import at.tuwien.prip.model.project.selection.LabelSelection;
 import at.tuwien.prip.model.project.selection.MultiPageSelection;
+import at.tuwien.prip.model.project.selection.NodeSelection;
 import at.tuwien.prip.model.project.selection.SegmentSelection;
 import at.tuwien.prip.model.project.selection.SinglePageSelection;
 import at.tuwien.prip.model.project.selection.blade.CaptionSelection;
@@ -121,12 +128,14 @@ import at.tuwien.prip.model.project.selection.blade.PDFInstruction;
 import at.tuwien.prip.model.project.selection.blade.PdfSelection;
 import at.tuwien.prip.model.project.selection.blade.RegionSelection;
 import at.tuwien.prip.model.project.selection.blade.SectionSelection;
+import at.tuwien.prip.model.project.selection.blade.SelectionContainer;
 import at.tuwien.prip.model.project.selection.blade.SemanticSelection;
 import at.tuwien.prip.model.project.selection.blade.TableCell;
 import at.tuwien.prip.model.project.selection.blade.TableColumnSelection;
 import at.tuwien.prip.model.project.selection.blade.TableRowSelection;
 import at.tuwien.prip.model.project.selection.blade.TableSelection;
 import at.tuwien.prip.model.project.selection.blade.TextSelection;
+import at.tuwien.prip.model.utils.DOMHelper;
 import at.tuwien.prip.model.utils.DocGraphUtils;
 
 /**
@@ -172,6 +181,7 @@ ISelectionProvider
 	/* actions */
 	private Action deleteItemAction;
 	private Action closeDocumentAction;
+	private Action addLabelAction;
 	
 	private TabFolder tabFolder;
 	private TabItem docTab, resultTab, gtTab;
@@ -280,10 +290,8 @@ ISelectionProvider
 
 				AnnotatorEditor we = DocWrapUIUtils.getWrapperEditor();
 				if (we!=null)
-				{
 					we.selectionControl.selectionChanged(event);
-				}
-				
+								
 				TreeSelection tsel = (TreeSelection) event.getSelection();
 				Object top = tsel.getFirstElement();
 				if (top instanceof AbstractSelection)
@@ -432,6 +440,18 @@ ISelectionProvider
 		else
 		{
 			mgr.add(deleteItemAction);
+			Object resSel = null;
+			if (resultViewer.getSelection()!=null)
+			{
+				StructuredSelection ssel = (StructuredSelection) resultViewer.getSelection();
+				resSel = ssel.getFirstElement();
+			}
+			if(tabFolder.getSelectionIndex()==1 && resSel!=null &&
+					(resSel instanceof NodeSelection||
+							resSel instanceof SelectionContainer))
+			{
+				mgr.add(addLabelAction);
+			}
 		}
 	}
 
@@ -464,19 +484,18 @@ ISelectionProvider
 	public void selectionChanged(SelectionChangedEvent event) 
 	{
 		if (event.getSelection() == null || !( event.getSelection() instanceof IStructuredSelection))
-		{
 			return;
-		}
 
+		if (event.getSelectionProvider().equals(resultViewer))
+			return;//self
+		
 		StructuredSelection selection = (StructuredSelection) event.getSelection();
 		Object obj = selection.getFirstElement();
 		if (obj==null)
 			return;
 
 		if (obj==lastSelection)
-		{
 			return;//nothing to do...
-		}
 
 		lastSelection = obj;
 
@@ -521,7 +540,7 @@ ISelectionProvider
 				}
 			}
 		}
-		else if (obj instanceof org.eclipse.swt.graphics.Rectangle) 		
+		else 
 		{
 			/* determine parent */
 			ITreeSelection ts = (ITreeSelection) getSelection();
@@ -536,7 +555,7 @@ ISelectionProvider
 						"No parent selected. Please select a parent layout selection in the Annotation View.");
 				return;
 			}
-			
+
 			AbstractSelection parent = (AbstractSelection) ts.getFirstElement();
 			parent = setSelectionProperties(parent);
 			if (parent==null)
@@ -549,76 +568,102 @@ ISelectionProvider
 			}
 
 			// get current benchmark item
-			BenchmarkDocument document = null;
-			IEditorPart editor = DocWrapUIUtils.getActiveEditor();
-			if (!(editor instanceof AnnotatorEditor))
+			IEditorPart editor = DocWrapUIUtils.getActiveEditor();		
+			AnnotatorEditor we = (AnnotatorEditor) editor;			
+			BenchmarkDocument document = (BenchmarkDocument) we.getActiveDocument();
+			
+			//REGION SELECTION
+			if (obj instanceof org.eclipse.swt.graphics.Rectangle) 		
 			{
-				ErrorDump.debug(this, "Cannot parse editor");
-			}
-
-			AnnotatorEditor we = (AnnotatorEditor) editor;
-			document = (BenchmarkDocument) we.getActiveDocument();
-			ISegmentGraph dg = null;
-			int pageNum = -1;
-			if (document != null)
-			{
-				if (document.getFormat()==DocumentFormat.PDF && document instanceof PdfBenchmarkDocument)
+				ISegmentGraph dg = null;
+				int pageNum = -1;
+				if (document != null)
 				{
-					pageNum = we.getCurrentDocumentPageNum();
-					PdfDocumentPage page = ((PdfBenchmarkDocument)document).getPage(pageNum);
-					dg = page.getGraph();
-				}
-				else if (document.getFormat()==DocumentFormat.HTML && document instanceof HTMLBenchmarkDocument)
-				{
-					HTMLBenchmarkDocument benchDoc = (HTMLBenchmarkDocument) document;
-					dg = benchDoc.getDocumentGraph();
-				}
-				
-				if (dg == null) {
-					return;
-				}
-
-				/* Extract PDF operations under region */
-				org.eclipse.swt.graphics.Rectangle rect = (org.eclipse.swt.graphics.Rectangle) obj;
-				Rectangle rectangle = new Rectangle(rect.x, rect.y,	rect.width, rect.height);
-
-				/* add a region selection */
-				RegionSelection region = createRegionSelectionUnder(pageNum, rectangle, dg);
-				if (region==null)
-					return;
-
-				int regionId = getCounter((AbstractSelection)parent, "REGION");
-				region.setId(regionId);	
-				region.setPageNum(pageNum);
-
-				/* add region to parent */
-				if (parent instanceof MultiPageSelection)
-				{
-					AnnotationPage p = findPageFromMultiPageSelection(
-							(MultiPageSelection) parent, pageNum);
-					if (p == null) 
+					if (document.getFormat()==DocumentFormat.PDF && document instanceof PdfBenchmarkDocument)
 					{
-						p = new AnnotationPage();
-						p.setPageNum(pageNum);
-						((MultiPageSelection) parent).getPages().add(p);
+						pageNum = we.getCurrentDocumentPageNum();
+						PdfDocumentPage page = ((PdfBenchmarkDocument)document).getPage(pageNum);
+						dg = page.getGraph();
 					}
-					p.getItems().add(region);
-				}
-				else if (parent instanceof SinglePageSelection)
-				{
-					SinglePageSelection spParent = (SinglePageSelection) parent;
-					spParent.getItems().add(region);
+					else if (document.getFormat()==DocumentFormat.HTML && document instanceof HTMLBenchmarkDocument)
+					{
+						HTMLBenchmarkDocument benchDoc = (HTMLBenchmarkDocument) document;
+						dg = benchDoc.getDocumentGraph();
+					}
+
+					if (dg == null) 
+						return;
+				
+					/* Extract region */
+					org.eclipse.swt.graphics.Rectangle rect = (org.eclipse.swt.graphics.Rectangle) obj;
+					Rectangle rectangle = new Rectangle(rect.x, rect.y,	rect.width, rect.height);
+
+					/* add a region selection */
+					RegionSelection region = createRegionSelectionUnder(pageNum, rectangle, dg);
+					if (region==null)
+						return;
+
+					int regionId = getCounter((AbstractSelection)parent, "REGION");
+					region.setId(regionId);	
+					region.setPageNum(pageNum);
+
+					/* add region to parent */
+					if (parent instanceof MultiPageSelection)
+					{
+						AnnotationPage p = findPageFromMultiPageSelection(
+								(MultiPageSelection) parent, pageNum);
+						if (p == null) 
+						{
+							p = new AnnotationPage();
+							p.setPageNum(pageNum);
+							((MultiPageSelection) parent).getPages().add(p);
+						}
+						p.getItems().add(region);
+					}
+					else if (parent instanceof SinglePageSelection)
+					{
+						SinglePageSelection spParent = (SinglePageSelection) parent;
+						spParent.getItems().add(region);
+					}
 				}
 			}
-
+			//NODE SELECTION
+			else if (obj instanceof XPathBridge)
+			{
+				XPathBridge bridge = (XPathBridge) obj;
+				if (parent instanceof SelectionContainer)
+				{
+					//create a node selection and add to container
+					String xpath = bridge.getPath();
+					
+					if (document instanceof HTMLBenchmarkDocument)
+					{
+						HTMLBenchmarkDocument htmlDoc = (HTMLBenchmarkDocument) document;
+						Document dom = htmlDoc.getCachedJavaDOM();
+						List<Node> nodes;
+						try 
+						{
+							nodes = DOMHelper.XPath.evaluateXPath(dom.getDocumentElement(), xpath);
+							NodeSelection ns = new NodeSelection(nodes.get(0), dom);
+							int id = getCounter((AbstractSelection)parent, "NODE");
+							ns.setId(id);	
+							((SelectionContainer) parent).getSelections().add(ns);
+						}
+						catch (XPathSyntaxException e) 
+						{
+							e.printStackTrace();
+						}
+					}					
+				}
+			}
 			setBenchmarkDocument(document, false);
+			dirty = true;
 		}
-		dirty = true;
 		updateActionEnablement();		
 	}
 
 	/**
-	 *
+	 * Close selected document.
 	 */
 	public void closeDocument()
 	{
@@ -951,13 +996,14 @@ ISelectionProvider
 		combo1 = new Combo(panel, SWT.READ_ONLY | SWT.DROP_DOWN);
 		data = new GridData();
 		data.heightHint = 30;
-		data.widthHint = 200;
+		data.widthHint = 120;
 		data.horizontalSpan = 1;
 		data.grabExcessHorizontalSpace = true;
 		combo1.setLayoutData(data);
-		combo1.add("Table");
-		type = "TABLE";
+		combo1.add("Selection");
+		type = "SELECTION";
 
+		combo1.add("Table");
 		combo1.add("List");
 		combo1.add("Figure");
 		combo1.add("Section");
@@ -971,13 +1017,8 @@ ISelectionProvider
 		combo2.setEnabled(true);
 		combo2.setLayoutData(data);
 		combo2.removeAll();
-		combo2.add("Region");
-		combo2.add("Column");
-		combo2.add("Row");
-		combo2.add("Accessor vert.");
-		combo2.add("Accessor horiz.");
-		combo2.add("Cell");
-		combo2.add("Caption");
+		combo2.add("Node");
+		combo2.add("Label");
 		combo2.select(0);
 
 		combo1.addSelectionListener(new SelectionListener() 
@@ -988,7 +1029,18 @@ ISelectionProvider
 				String string = combo1.getItem(combo1.getSelectionIndex());
 				type = string;
 
-				if ("Table".equals(string)) 
+				if ("Selection".equals(string))
+				{
+
+					combo2.setEnabled(true);
+					combo2.removeAll();
+					combo2.add("Node");
+					combo2.add("Label");
+					combo2.select(0);
+
+					createSelectionButton.setEnabled(true);
+				}
+				else if ("Table".equals(string)) 
 				{
 					combo2.setEnabled(true);
 					combo2.removeAll();
@@ -1164,15 +1216,18 @@ ISelectionProvider
 			public void handleEvent(Event event) 
 			{
 				/* create a new benchmark document */
-				BenchmarkDocument benchDoc = null;
-				IEditorPart editor = DocWrapUIUtils.getActiveEditor();
-				if (editor instanceof AnnotatorEditor)
+				BenchmarkDocument benchDoc = document;
+				if (benchDoc==null)
 				{
-					AnnotatorEditor we = (AnnotatorEditor) editor;
-					IEditorInput input = we.getEditorInput();
-					if (input instanceof BenchmarkEditorInput) {
-						BenchmarkEditorInput bei = (BenchmarkEditorInput) input;
-						benchDoc = bei.getBenchmarkDocument();
+					IEditorPart editor = DocWrapUIUtils.getActiveEditor();
+					if (editor instanceof AnnotatorEditor)
+					{
+						AnnotatorEditor we = (AnnotatorEditor) editor;
+						IEditorInput input = we.getEditorInput();
+						if (input instanceof BenchmarkEditorInput) {
+							BenchmarkEditorInput bei = (BenchmarkEditorInput) input;
+							benchDoc = bei.getBenchmarkDocument();
+						}
 					}
 				}
 				if (benchDoc == null) {
@@ -1343,7 +1398,7 @@ ISelectionProvider
 	private void clearCombo2() {
 		combo2.setEnabled(false);
 		GridData data = new GridData();
-		data.widthHint = 150;
+		data.widthHint = 120;
 		combo2.setLayoutData(data);
 		combo2.removeAll();
 		combo2.add("                  ");
@@ -1361,6 +1416,37 @@ ISelectionProvider
 				.getImage(ISharedImages.IMG_ETOOL_DELETE);
 		deleteItemAction.setImageDescriptor(ImageDescriptor
 				.createFromImage(deleteImage));
+		
+		addLabelAction = new Action("Add Label") {
+			public void run(){
+				Object resSel = null;
+				if (resultViewer.getSelection()!=null)
+				{
+					StructuredSelection ssel = (StructuredSelection) resultViewer.getSelection();
+					resSel = ssel.getFirstElement();
+					if (resSel!=null && resSel instanceof AbstractSelection)
+					{
+						AbstractSelection as = (AbstractSelection) resSel;
+						InputDialog dialog = new InputDialog(
+								Display.getDefault().getActiveShell(), 
+								"Enter label", "New Label", "", null);
+						if (dialog.open()==0)
+						{
+							String label = dialog.getValue();
+							as.setLabel(label);
+						}
+						
+						resultViewer.refresh();
+						dirty = true;
+						updateActionEnablement();
+					}
+				}
+			}
+		};
+		Image addLabelImage = PlatformUI.getWorkbench().getSharedImages()
+				.getImage(ISharedImages.IMG_OBJ_ADD);
+		addLabelAction.setImageDescriptor(ImageDescriptor
+				.createFromImage(addLabelImage));
 	}
 
 	/**
@@ -1425,7 +1511,7 @@ ISelectionProvider
 	}
 
 	/**
-	 * 
+	 * Delete the selected item from its container.
 	 */
 	public void deleteItem() 
 	{
@@ -1457,6 +1543,9 @@ ISelectionProvider
 				if (parent instanceof AnnotationPage) {
 					((AnnotationPage) parent).getItems().remove(obj);
 				}
+				else if (parent instanceof Annotation) {
+					((Annotation) parent).getItems().remove(obj);
+				}
 			} else if (obj instanceof PdfSelection) {
 				if (parent instanceof ExtractionResult) {
 					// ((ExtractionResult)parent).getItems().remove(obj);
@@ -1479,6 +1568,11 @@ ISelectionProvider
 				{
 					SinglePageSelection selection = (SinglePageSelection) parent;
 					selection.getItems().remove(obj);
+				}
+				else if (parent instanceof SelectionContainer)
+				{
+					SelectionContainer selection = (SelectionContainer) parent;
+					selection.getSelections().remove(obj);
 				}
 				else if (parent instanceof MultiPageSelection)
 				{
@@ -1524,9 +1618,8 @@ ISelectionProvider
 
 		DocWrapEditor editor = DocWrapUIUtils.getDocWrapEditor();
 		if (editor!=null)
-		{
 			editor.highlightBox(null);
-		}
+		
 		resultViewer.refresh();
 		dirty = true;
 		updateActionEnablement();
@@ -1579,11 +1672,15 @@ ISelectionProvider
 		AbstractSelection selection = null;
 
 		/* create new selection according to selection */
+		if (type.equalsIgnoreCase("SELECTION"))
+		{
+			/* create a new table selection */
+			selection = new SelectionContainer();
+		}
 		if (type.equalsIgnoreCase("TABLE"))
 		{
 			/* create a new table selection */
 			selection = new TableSelection();
-
 		}
 		else if (type.equalsIgnoreCase("LIST"))
 		{
@@ -1727,7 +1824,16 @@ ISelectionProvider
 				}
 			}
 		}
-
+		else if (parent instanceof SelectionContainer)
+		{
+			for (AbstractSelection sel : ((SelectionContainer) parent).getSelections()) 
+			{
+				if (sel.getType().equalsIgnoreCase(type)) {
+					counter++;
+				}
+			}
+		}
+			
 		return counter;
 	}
 
@@ -1765,32 +1871,27 @@ ISelectionProvider
 	{
 		String item1 = combo1.getItem(combo1.getSelectionIndex());
 		String item2 = combo2.getItem(combo2.getSelectionIndex());
-
 		item1 = item1.replaceAll(" ", "_");
-		if (!item1.equalsIgnoreCase(selection.getType()))
-		{
+		item2 = item2.replaceAll(" ", "_");
+		
+		if (!item1.equalsIgnoreCase(selection.getType()) && !item2.equalsIgnoreCase(selection.getType()))
 			return null;
-		}
+		
 		else if (selection instanceof SectionSelection)
-		{
 			((SectionSelection) selection).setSectionType(item2);
-		}
+		
 		else if (selection instanceof TextSelection)
-		{
 			((TextSelection) selection).setTextType(item2);
-		}
+		
 		else if (selection instanceof ConceptSectionSelection)
-		{
 			((ConceptSectionSelection) selection).setSectionConcept(item2);
-		}
+		
 		else if (selection instanceof SemanticSelection)
-		{
 			((SemanticSelection) selection).setSemantic(item2);
-		}
+		
 		else if (selection instanceof FunctionalSelection)
-		{
 			((FunctionalSelection) selection).setFunction(item2);
-		}
+		
 		else if (selection instanceof FigureSelection)
 		{
 			//add an image
@@ -1930,6 +2031,11 @@ ISelectionProvider
 				selection = item;
 			}
 		}
+//		else if (selection instanceof SelectionContainer)
+//		{
+//			int id = getCounter(selection, item2);
+//			selection.setId(id);
+//		}
 		return selection;
 	}
 

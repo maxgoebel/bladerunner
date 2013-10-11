@@ -24,7 +24,7 @@
    </vm>
 
    <plugins>
-      <plugin id="at.tuwien.dbai.annotator"/>
+      <plugin id="at.tuwien.dbai.annotator" fragment=""/>
       <plugin id="at.tuwien.prip.common"/>
       <plugin id="at.tuwien.prip.model"/>
       <plugin id="at.tuwien.prip.mozcore"/>
@@ -116,7 +116,7 @@
       <plugin id="org.eclipse.ui.workbench.texteditor"/>
       <plugin id="org.eclipse.zest.core"/>
       <plugin id="org.eclipse.zest.layouts"/>
-      <plugin id="org.mozilla.dom"/>
+      <plugin id="org.mozilla.dom" fragment=""/>
       <plugin id="org.mozilla.xpcom"/>
       <plugin id="org.mozilla.xulrunner"/>
       <plugin id="org.mozilla.xulrunner.gtk.linux.x86" fragment="true"/>

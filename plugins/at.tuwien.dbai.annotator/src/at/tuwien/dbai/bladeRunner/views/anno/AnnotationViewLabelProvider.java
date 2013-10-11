@@ -85,6 +85,8 @@ public class AnnotationViewLabelProvider extends ColumnLabelProvider {
 		{
 			AbstractSelection selection = (AbstractSelection) element;
 			result = selection.getType() + " (id=" + selection.getId() + ")";
+			if (selection.getLabel()!=null && selection.getLabel().length()>0)
+				result += " Label: " +selection.getLabel(); 
 		}
 		else if (element instanceof TableSelection) 
 		{

@@ -929,11 +929,11 @@ public class DocumentGraphCanvas extends FigureCanvas {
 		int xTrans = (int) (midPageX - midDocX);
 		int yTrans = (int) (midPageY - midDocY);//+50;
 
-		drawActiveGraph(true);
+		drawActiveGraph(false);
 		translateContents2(xTrans, yTrans);
 		//		parent.layout();
 	}
-
+	
 	/**
 	 * Calibrate the graph to fit into the viewing frame.
 	 * 

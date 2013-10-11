@@ -786,7 +786,7 @@ implements IWebBrowser, ISelectionProvider, ISelectionListener
 			modifierKeyText = "CMD";
 		}
 		clickSelectAction.setToolTipText("Enable/Disable " + modifierKeyText + "+Click element selection in the browser.");
-		clickSelectAction.setChecked(false);
+		clickSelectAction.setChecked(true);
 
 		//clear cache action - This action wipes clean the browser cache (both RAM and Memory) bug 140877
 		clearCacheAction = new Action(null, Action.AS_PUSH_BUTTON){
@@ -1349,6 +1349,8 @@ docEventTarget.addEventListener("ATFConsoleLog", atfConsoleLogListener, false);
 
 	};
 
+	public nsIDOMNode highlightNode = null;
+	
 	protected nsIDOMEventListener highlightElementListener = new nsIDOMEventListener(){
 
 		public void handleEvent(nsIDOMEvent event)
@@ -1372,6 +1374,7 @@ docEventTarget.addEventListener("ATFConsoleLog", atfConsoleLogListener, false);
 							//filter out the flashing divs
 							if( !MozIDEUIPlugin.ATF_INTERNAL.equals(element.getAttribute("class")) ){
 								highlightElement( element );
+								highlightNode = element;
 							}
 						}
 					}

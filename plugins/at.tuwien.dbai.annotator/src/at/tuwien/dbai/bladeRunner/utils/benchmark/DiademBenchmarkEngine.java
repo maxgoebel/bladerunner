@@ -37,9 +37,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -52,6 +54,7 @@ import at.tuwien.prip.common.datastructures.Map2List;
 import at.tuwien.prip.common.datastructures.MapList;
 import at.tuwien.prip.common.datastructures.Pair;
 import at.tuwien.prip.common.utils.SimpleTimer;
+import at.tuwien.prip.common.utils.StringUtils;
 import at.tuwien.prip.model.document.RectangleAdjustment;
 import at.tuwien.prip.model.graph.ISegmentGraph;
 import at.tuwien.prip.model.project.annotation.Annotation;
@@ -68,12 +71,14 @@ import at.tuwien.prip.model.project.document.benchmark.PdfBenchmarkDocument;
 import at.tuwien.prip.model.project.document.pdf.PdfDocumentPage;
 import at.tuwien.prip.model.project.selection.AbstractSelection;
 import at.tuwien.prip.model.project.selection.MultiPageSelection;
+import at.tuwien.prip.model.project.selection.NodeSelection;
 import at.tuwien.prip.model.project.selection.SinglePageSelection;
 import at.tuwien.prip.model.project.selection.blade.ConceptSectionSelection;
 import at.tuwien.prip.model.project.selection.blade.FunctionalSelection;
 import at.tuwien.prip.model.project.selection.blade.PDFInstruction;
 import at.tuwien.prip.model.project.selection.blade.RegionSelection;
 import at.tuwien.prip.model.project.selection.blade.SectionSelection;
+import at.tuwien.prip.model.project.selection.blade.SelectionContainer;
 import at.tuwien.prip.model.project.selection.blade.SemanticSelection;
 import at.tuwien.prip.model.project.selection.blade.TableCell;
 import at.tuwien.prip.model.project.selection.blade.TableSelection;
@@ -1071,7 +1076,7 @@ public class DiademBenchmarkEngine {
 
 			String fileName = outFileName.substring(
 					outFileName.lastIndexOf("/") + 1, outFileName.length());
-			out.write("<document filename='" + fileName + "'>\r\n");
+			out.write("<document filename='" + fileName + "' ref='"+document.getUri()+"' timestamp='"+StringUtils.getTimestamp()+"'>\r\n");
 
 			for (Annotation annotation : document.getAnnotations()) 
 			{
@@ -1105,6 +1110,12 @@ public class DiademBenchmarkEngine {
 					else if (item instanceof SinglePageSelection)
 					{
 						out.write(singlePageSelection((SinglePageSelection) item, TAB));
+					}
+					//CASE 5: selection container
+					else if (item instanceof SelectionContainer)
+					{
+						SelectionContainer container = (SelectionContainer) item;
+						out.write(containerSelection(container, TAB));
 					}
 				}
 			}
@@ -1287,6 +1298,38 @@ public class DiademBenchmarkEngine {
 		return sb.toString();
 	}
 
+	/**
+	 * 
+	 * @param container
+	 * @param indent
+	 * @return
+	 */
+	private static String containerSelection(SelectionContainer container, String indent)
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append(indent + "<container id='"
+				+ (container.getId() + 1) + "'>\r\n");
+		for(AbstractSelection selection : container.getSelections())
+		{
+			if(selection instanceof NodeSelection)
+			{
+				sb.append(nodeSelection((NodeSelection)selection, indent + TAB));
+			}
+		}
+		sb.append(indent + "</container>\r\n");
+		return sb.toString();
+	}
+	
+	private static String nodeSelection(NodeSelection node, String indent)
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append(indent + "<node id='"
+				+ (node.getId() + 1) + "'>\r\n");
+		sb.append(indent + TAB + node.getTargetXPath() + "\r\n");
+		sb.append(indent + "</node>\r\n");
+		return sb.toString();
+	}
+	
 	/**
 	 * 
 	 * @param region

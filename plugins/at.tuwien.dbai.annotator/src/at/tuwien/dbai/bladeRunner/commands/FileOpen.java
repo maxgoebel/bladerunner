@@ -51,8 +51,8 @@ public class FileOpen extends AbstractHandler implements IHandler {
 		FileDialog dialog = new FileDialog(shell, SWT.OPEN);
 		String home = System.getenv("HOME");
 		dialog.setFilterPath(home);
-		dialog.setFilterExtensions(new String[] { "*.pdf", "*.html" });
-		dialog.setFilterNames(new String[] { "PDF Files", "HTML Files" });
+		dialog.setFilterExtensions(new String[] { "*.html", "*.pdf" });
+		dialog.setFilterNames(new String[] { "HTML Files", "PDF Files" });
 
 		/* open dialog */
 		final String fileSelected = dialog.open();
