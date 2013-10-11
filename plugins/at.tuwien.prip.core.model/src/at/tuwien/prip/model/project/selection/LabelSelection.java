@@ -31,19 +31,19 @@ import at.tuwien.prip.model.project.annotation.AnnotationLabel;
 public class LabelSelection extends SinglePageSelection 
 {
 	@Transient
-	private AnnotationLabel label; //actual enum; not stored in db
+	private AnnotationLabel annotationLabel; //actual enum; not stored in db
 	
 	@Column(name="LABEL")  
 	private int labelCode; // enum code gets stored in db
 
 	@PrePersist
 	void populateDBFields(){
-		labelCode = label.getCode();
+		labelCode = annotationLabel.getCode();
 	}
 
 	@PostLoad
 	void populateTransientFields(){
-		label = AnnotationLabel.valueOf(labelCode);
+		annotationLabel = AnnotationLabel.valueOf(labelCode);
 	}
 
 	private String subLabel;
@@ -55,16 +55,16 @@ public class LabelSelection extends SinglePageSelection
 		super("LABEL");
 	}
 	
-	public AnnotationLabel getLabel() {
-		return label;
+	public AnnotationLabel getAnnotationLabel() {
+		return annotationLabel;
 	}
 
 	public String getSubLabel() {
 		return subLabel;
 	}
 
-	public void setLabel(AnnotationLabel label) {
-		this.label = label;
+	public void setAnnotationLabel(AnnotationLabel label) {
+		this.annotationLabel = label;
 	}
 
 	public void setSubLabel(String subLabel) {

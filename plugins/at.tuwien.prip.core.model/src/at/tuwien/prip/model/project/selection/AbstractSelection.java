@@ -37,6 +37,8 @@ public class AbstractSelection
 	protected Rectangle bounds;
 
 	protected String type;
+	
+	private String label;
 
 	/**
 	 * Constructor.
@@ -63,5 +65,13 @@ public class AbstractSelection
 
 	public String getType() {
 		return type;
+	}
+	
+	public String getLabel() {
+		return label;
+	}
+	
+	public void setLabel(String label) {
+		this.label = label;
 	}
 }
