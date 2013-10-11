@@ -12,8 +12,10 @@ package at.tuwien.prip.common.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -21,7 +23,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import at.tuwien.prip.common.exceptions.PropertyLoadException;
 import at.tuwien.prip.common.log.ErrorDump;
 
 /**
@@ -31,17 +32,24 @@ import at.tuwien.prip.common.log.ErrorDump;
  */
 public class StringUtils {
 
-	static List<Character> bulletpoints;
-	static {
-		try {
-			bulletpoints = new ArrayList<Character>();
-			String bullets = BasePropertiesLoader.loadProperty("bullets");
-			for (String s : bullets.split("\\s")) {
-				bulletpoints.add(s.toCharArray()[0]);
-			}
-		} catch (PropertyLoadException e) {
-			e.printStackTrace();
-		}
+//	static List<Character> bulletpoints;
+//	static {
+//		try {
+//			bulletpoints = new ArrayList<Character>();
+//			String bullets = BasePropertiesLoader.loadProperty("bullets");
+//			for (String s : bullets.split("\\s")) {
+//				bulletpoints.add(s.toCharArray()[0]);
+//			}
+//		} catch (PropertyLoadException e) {
+//			e.printStackTrace();
+//		}
+//	}
+	
+	public static String getTimestamp()
+	{
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		return dateFormat.format(date);
 	}
 
 	public static String cleanText (String input) 
@@ -74,15 +82,15 @@ public class StringUtils {
 		return output;
 	}
 	
-	public static String replaceBullets (String input, Character symbol)
-	{
-		for (Character bullet : bulletpoints)
-		{
-			input = input.replace(bullet, symbol);
-		}
-		
-		return input;
-	}
+//	public static String replaceBullets (String input, Character symbol)
+//	{
+//		for (Character bullet : bulletpoints)
+//		{
+//			input = input.replace(bullet, symbol);
+//		}
+//		
+//		return input;
+//	}
     /**
      * concatenates to single string
      */
@@ -148,6 +156,21 @@ public class StringUtils {
         return str.replaceAll("\\s*$", "");
     }
 
+    /**
+     * 
+     * @param str
+     * @param size
+     * @return
+     */
+    public static String trimTo(String str, int size) {
+    	int presuf = (size-3)/2 +1;
+    	StringBuilder builder = new StringBuilder();
+    	builder.append(str.substring(0, presuf));
+    	builder.append("...");
+    	builder.append(str.substring(str.length()-presuf));
+        return builder.toString();
+    }
+    
     public static String join(String s[], String delimiter)
     {
         StringBuffer buffer = new StringBuffer();
