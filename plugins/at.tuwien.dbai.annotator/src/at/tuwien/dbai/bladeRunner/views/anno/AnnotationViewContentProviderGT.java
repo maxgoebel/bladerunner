@@ -28,6 +28,7 @@ import at.tuwien.prip.model.project.selection.AbstractSelection;
 import at.tuwien.prip.model.project.selection.LabelSelection;
 import at.tuwien.prip.model.project.selection.blade.PDFInstruction;
 import at.tuwien.prip.model.project.selection.blade.PdfSelection;
+import at.tuwien.prip.model.project.selection.blade.RecordSelection;
 import at.tuwien.prip.model.project.selection.blade.RegionSelection;
 import at.tuwien.prip.model.project.selection.blade.TableCell;
 import at.tuwien.prip.model.project.selection.blade.TableSelection;
@@ -61,6 +62,9 @@ public class AnnotationViewContentProviderGT implements ITreeContentProvider {
 		} else if (parentElement instanceof DocumentCollection) {
 			DocumentCollection dc = (DocumentCollection) parentElement;
 			return dc.toArray();
+		} else if (parentElement instanceof RecordSelection) {
+			RecordSelection selection = (RecordSelection) parentElement;
+			return ListUtils.toArray(selection.getSelections(), AbstractSelection.class);
 		} else if (parentElement instanceof PdfSelection) {
 			PdfSelection selection = (PdfSelection) parentElement;
 			return ListUtils.toArray(selection.getInstructions(),
@@ -126,6 +130,8 @@ public class AnnotationViewContentProviderGT implements ITreeContentProvider {
 			return true;
 		} else if (element instanceof TableSelection) {
 			return ((TableSelection) element).getPages().size() > 0;
+		} else if (element instanceof RecordSelection) {
+			return ((RecordSelection) element).getSelections().size() > 0;
 		} else if (element instanceof RegionSelection) {
 			RegionSelection region = (RegionSelection) element;
 			if (region.getCellContainer().getCells().size() > 0)

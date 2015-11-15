@@ -40,6 +40,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -64,6 +65,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import at.tuwien.dbai.bladeRunner.Activator;
@@ -75,6 +77,7 @@ import at.tuwien.dbai.bladeRunner.control.IModelChangedListener;
 import at.tuwien.dbai.bladeRunner.control.ModelChangedEvent;
 import at.tuwien.dbai.bladeRunner.editors.AnnotatorEditor;
 import at.tuwien.dbai.bladeRunner.editors.annotator.DocWrapEditor;
+import at.tuwien.dbai.bladeRunner.editors.html.WeblearnEditor;
 import at.tuwien.dbai.bladeRunner.utils.ModelUtils2;
 import at.tuwien.dbai.bladeRunner.utils.XPathBridge;
 import at.tuwien.dbai.bladeRunner.utils.benchmark.DiademBenchmarkEngine;
@@ -128,7 +131,7 @@ import at.tuwien.prip.model.project.selection.blade.PDFInstruction;
 import at.tuwien.prip.model.project.selection.blade.PdfSelection;
 import at.tuwien.prip.model.project.selection.blade.RegionSelection;
 import at.tuwien.prip.model.project.selection.blade.SectionSelection;
-import at.tuwien.prip.model.project.selection.blade.SelectionContainer;
+import at.tuwien.prip.model.project.selection.blade.RecordSelection;
 import at.tuwien.prip.model.project.selection.blade.SemanticSelection;
 import at.tuwien.prip.model.project.selection.blade.TableCell;
 import at.tuwien.prip.model.project.selection.blade.TableColumnSelection;
@@ -168,6 +171,8 @@ ISelectionProvider
 	private Button clearResultButton;
 	private Button clearGTButton;
 	private Button saveAnnotationButton;
+	private Button toggleHighlightButton;
+	private Button automagicButton;
 
 	private Combo combo1, combo2;
 	private String type;
@@ -448,7 +453,7 @@ ISelectionProvider
 			}
 			if(tabFolder.getSelectionIndex()==1 && resSel!=null &&
 					(resSel instanceof NodeSelection||
-							resSel instanceof SelectionContainer))
+							resSel instanceof RecordSelection))
 			{
 				mgr.add(addLabelAction);
 			}
@@ -501,21 +506,22 @@ ISelectionProvider
 
 		if (obj instanceof BenchmarkDocument) 
 		{
-			BenchmarkDocument benchDoc = (BenchmarkDocument) obj;
-
+			BenchmarkDocument document = (BenchmarkDocument) obj;
+			this.document = document;
+			
 			/* update universal benchmark model */
 			BenchmarkModel model = Activator.modelControl.getModel();
-			model.setCurrentDocument(benchDoc);
+			model.setCurrentDocument(document);
 			Activator.modelControl.modelChanged(model);
 			
 			/* send selection to PDF editor */
 			IWorkbenchPage page = getSite().getPage();
 			page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-			if (page != null && benchDoc != null) 
+			if (page != null && document != null) 
 			{
 				try 
 				{
-					BenchmarkEditorInput input = new BenchmarkEditorInput(benchDoc);
+					BenchmarkEditorInput input = new BenchmarkEditorInput(document);
 					IEditorPart editor = page.findEditor(input);
 					if (editor==null)
 					{
@@ -570,7 +576,6 @@ ISelectionProvider
 			// get current benchmark item
 			IEditorPart editor = DocWrapUIUtils.getActiveEditor();		
 			AnnotatorEditor we = (AnnotatorEditor) editor;			
-			BenchmarkDocument document = (BenchmarkDocument) we.getActiveDocument();
 			
 			//REGION SELECTION
 			if (obj instanceof org.eclipse.swt.graphics.Rectangle) 		
@@ -631,7 +636,7 @@ ISelectionProvider
 			else if (obj instanceof XPathBridge)
 			{
 				XPathBridge bridge = (XPathBridge) obj;
-				if (parent instanceof SelectionContainer)
+				if (parent instanceof RecordSelection)
 				{
 					//create a node selection and add to container
 					String xpath = bridge.getPath();
@@ -647,11 +652,20 @@ ISelectionProvider
 							NodeSelection ns = new NodeSelection(nodes.get(0), dom);
 							int id = getCounter((AbstractSelection)parent, "NODE");
 							ns.setId(id);	
-							((SelectionContainer) parent).getSelections().add(ns);
+							((RecordSelection) parent).getSelections().add(ns);
 						}
 						catch (XPathSyntaxException e) 
 						{
 							e.printStackTrace();
+						}
+						
+						if (toggleHighlightButton.getSelection())
+						{
+							//turn on highlight
+							WeblearnEditor webEditor = we.getHtmlEditor();
+							LayoutAnnotation annotation = (LayoutAnnotation) document.getAnnotations().get(0);
+							List<AbstractSelection> items = annotation.getItems();
+							webEditor.highlightSelections(items);
 						}
 					}					
 				}
@@ -731,7 +745,6 @@ ISelectionProvider
 			{
 				public void run() 
 				{
-
 					if (docViewer!=null)
 					{
 						Benchmark bench = model.getCurrentBenchmark();
@@ -764,7 +777,7 @@ ISelectionProvider
 	 * @param document
 	 */
 	public void setInput(BenchmarkDocument document) {
-		this.document = (PdfBenchmarkDocument) document;
+		this.document = document;
 
 		this.resultViewer.setInput(document);
 		this.gtViewer.setInput(document);
@@ -954,9 +967,9 @@ ISelectionProvider
 				// From a view you get the site which allow to get the service
 				IHandlerService handlerService = (IHandlerService) getSite().getService(IHandlerService.class);
 				try {
-					handlerService.executeCommand("at.tuwien.dbai.bladeRunner.commands.addGroundTruth", null);
+					handlerService.executeCommand("at.tuwien.prip.annotator.commands.addGroundTruth", null);
 				} catch (Exception ex) {
-					throw new RuntimeException("at.tuwien.dbai.bladeRunner.commands.addGroundTruth not found");
+					throw new RuntimeException("at.tuwien.prip.annotator.commands.addGroundTruth not found");
 					// Give message
 				}
 				updateActionEnablement();
@@ -987,7 +1000,7 @@ ISelectionProvider
 	private Composite createAnnotationControlPanel(final Composite parent) 
 	{
 		Composite panel = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout(6, false);
+		GridLayout layout = new GridLayout(8, false);
 		panel.setLayout(layout);
 		GridData data = new GridData();
 		data.grabExcessHorizontalSpace = true;
@@ -1000,8 +1013,8 @@ ISelectionProvider
 		data.horizontalSpan = 1;
 		data.grabExcessHorizontalSpace = true;
 		combo1.setLayoutData(data);
-		combo1.add("Selection");
-		type = "SELECTION";
+		combo1.add("Record");
+		type = "RECORD";
 
 		combo1.add("Table");
 		combo1.add("List");
@@ -1029,7 +1042,7 @@ ISelectionProvider
 				String string = combo1.getItem(combo1.getSelectionIndex());
 				type = string;
 
-				if ("Selection".equals(string))
+				if ("Record".equals(string))
 				{
 
 					combo2.setEnabled(true);
@@ -1349,7 +1362,6 @@ ISelectionProvider
 
 				fileName = null;
 				fileName = dialog.open();
-				ErrorDump.debug(this, "Saving to " + fileName);
 
 				if (fileName != null) {
 					if (new java.io.File(fileName).exists()) {
@@ -1368,7 +1380,8 @@ ISelectionProvider
 							return;
 						}
 					}
-
+					ErrorDump.debug(this, "Saving to " + fileName);
+					
 					// OK, save to file
 					DiademBenchmarkEngine.writeBladeRegionFile(document, fileName);
 
@@ -1390,7 +1403,94 @@ ISelectionProvider
 		saveAnnotationButton.setLayoutData(data);
 		saveAnnotationButton.setEnabled(false);
 
+		//
+		Image highlightImage = PlatformUI.getWorkbench().getSharedImages()
+				.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+		toggleHighlightButton = new Button(panel, SWT.TOGGLE);
+		toggleHighlightButton.setImage(highlightImage);
+		toggleHighlightButton.setLayoutData(data);
+		toggleHighlightButton.setEnabled(false);
+		toggleHighlightButton.setSelection(false);
+		toggleHighlightButton.addSelectionListener(new SelectionListener() {
 
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (toggleHighlightButton.getSelection())
+				{
+					//turn on highlight
+					AnnotatorEditor we = DocWrapUIUtils.getWrapperEditor();
+					WeblearnEditor webEditor = we.getHtmlEditor();
+					LayoutAnnotation annotation = (LayoutAnnotation) document.getAnnotations().get(0);
+					List<AbstractSelection> items = annotation.getItems();
+					webEditor.highlightSelections(items);
+				}
+				else
+				{
+					//turn off highlight
+					AnnotatorEditor we = DocWrapUIUtils.getWrapperEditor();
+					WeblearnEditor webEditor = we.getHtmlEditor();
+					webEditor.highlightSelections(new ArrayList<AbstractSelection>());
+				}
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {				
+			}
+			
+		});
+		
+		//
+		Image wizardImage = PlatformUI.getWorkbench().getSharedImages()
+				.getImage(ISharedImages.IMG_TOOL_FORWARD);
+		automagicButton = new Button(panel, SWT.PUSH);
+		automagicButton.setImage(wizardImage);
+		automagicButton.setLayoutData(data);
+		automagicButton.setEnabled(false);
+		automagicButton.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				IStructuredSelection ssel = (IStructuredSelection) resultViewer.getSelection();
+				if (ssel.getFirstElement() instanceof RecordSelection)
+				{
+					List<Node> fields = new ArrayList<Node>();
+					RecordSelection container = (RecordSelection) ssel.getFirstElement();
+					for (AbstractSelection sel : container.getSelections())
+					{
+						if (sel instanceof NodeSelection)
+						{
+							fields.add(((NodeSelection) sel).getSelectedNode());
+						}
+					}
+					
+					Element root = DOMHelper.Tree.Ancestor.getClosestCommonAncestor(fields);
+					String rootPath = DOMHelper.XPath.getExactXPath(root,false,false);
+					Node input = root.getOwnerDocument().getDocumentElement();
+					try 
+					{
+						List<Element>candElems = new ArrayList<Element>();
+						List<Node> candidates = DOMHelper.XPath.evaluateXPath(input, rootPath);
+						for (Node candNode : candidates)
+							if (candNode instanceof Element)
+								candElems.add((Element) candNode);
+						
+						AnnotatorEditor we = DocWrapUIUtils.getWrapperEditor();
+						WeblearnEditor webEditor = we.getHtmlEditor();
+						webEditor.highlightNodes(new RGB(255, 140, 0), candElems);
+					} 
+					catch (XPathSyntaxException e1) {
+						e1.printStackTrace();
+					}
+					System.out.println();
+				}
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {				
+			}
+			
+		});
+		
 		panel.pack();
 		return panel;
 	}
@@ -1469,13 +1569,17 @@ ISelectionProvider
 			
 			IStructuredSelection sel = (IStructuredSelection) resultViewer.getSelection();
 			deleteItemAction.setEnabled(sel.size() > 0);
-			
+					
 			saveAnnotationButton.setEnabled(true);
 			if (document!=null)
 			{
 				if (document.getAnnotations().size() > 0) {
+					automagicButton.setEnabled(true);
+					toggleHighlightButton.setEnabled(true);
 					clearResultButton.setEnabled(true);
 				} else {
+					automagicButton.setEnabled(false);
+					toggleHighlightButton.setEnabled(false);
 					clearResultButton.setEnabled(false);
 				}
 			} 
@@ -1569,9 +1673,9 @@ ISelectionProvider
 					SinglePageSelection selection = (SinglePageSelection) parent;
 					selection.getItems().remove(obj);
 				}
-				else if (parent instanceof SelectionContainer)
+				else if (parent instanceof RecordSelection)
 				{
-					SelectionContainer selection = (SelectionContainer) parent;
+					RecordSelection selection = (RecordSelection) parent;
 					selection.getSelections().remove(obj);
 				}
 				else if (parent instanceof MultiPageSelection)
@@ -1607,7 +1711,7 @@ ISelectionProvider
 				}
 			}
 		}
-
+		
 		AnnotatorEditor we = (AnnotatorEditor) Activator.getActiveEditor();
 		DocumentModel model = we.documentControl.getDocModel();
 		DocumentUpdate update = new DocumentUpdate();
@@ -1616,6 +1720,15 @@ ISelectionProvider
 		update.setProvider(this);
 		we.documentControl.setDocumentUpdate(update);
 
+		if (toggleHighlightButton.getSelection())
+		{
+			//turn on highlight
+			WeblearnEditor webEditor = we.getHtmlEditor();
+			LayoutAnnotation annotation = (LayoutAnnotation) document.getAnnotations().get(0);
+			List<AbstractSelection> items = annotation.getItems();
+			webEditor.highlightSelections(items);
+		}
+		
 		DocWrapEditor editor = DocWrapUIUtils.getDocWrapEditor();
 		if (editor!=null)
 			editor.highlightBox(null);
@@ -1672,10 +1785,10 @@ ISelectionProvider
 		AbstractSelection selection = null;
 
 		/* create new selection according to selection */
-		if (type.equalsIgnoreCase("SELECTION"))
+		if (type.equalsIgnoreCase("RECORD"))
 		{
 			/* create a new table selection */
-			selection = new SelectionContainer();
+			selection = new RecordSelection();
 		}
 		if (type.equalsIgnoreCase("TABLE"))
 		{
@@ -1824,9 +1937,9 @@ ISelectionProvider
 				}
 			}
 		}
-		else if (parent instanceof SelectionContainer)
+		else if (parent instanceof RecordSelection)
 		{
-			for (AbstractSelection sel : ((SelectionContainer) parent).getSelections()) 
+			for (AbstractSelection sel : ((RecordSelection) parent).getSelections()) 
 			{
 				if (sel.getType().equalsIgnoreCase(type)) {
 					counter++;

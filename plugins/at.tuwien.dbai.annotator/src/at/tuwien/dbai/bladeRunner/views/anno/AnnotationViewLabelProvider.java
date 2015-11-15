@@ -34,6 +34,7 @@ import at.tuwien.prip.model.project.selection.SegmentSelection;
 import at.tuwien.prip.model.project.selection.blade.ListSelection;
 import at.tuwien.prip.model.project.selection.blade.PDFInstruction;
 import at.tuwien.prip.model.project.selection.blade.PdfSelection;
+import at.tuwien.prip.model.project.selection.blade.RecordSelection;
 import at.tuwien.prip.model.project.selection.blade.RegionSelection;
 import at.tuwien.prip.model.project.selection.blade.TableCell;
 import at.tuwien.prip.model.project.selection.blade.TableSelection;
@@ -149,6 +150,10 @@ public class AnnotationViewLabelProvider extends ColumnLabelProvider {
 		else if (element instanceof SegmentSelection)
 		{
 			result = "Segment Selection";
+		}
+		else if (element instanceof RecordSelection)
+		{
+			result = "Record Selection";
 		}
 		else if (element instanceof TextSelection) 
 		{

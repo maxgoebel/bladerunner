@@ -37,11 +37,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Display;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -76,9 +74,9 @@ import at.tuwien.prip.model.project.selection.SinglePageSelection;
 import at.tuwien.prip.model.project.selection.blade.ConceptSectionSelection;
 import at.tuwien.prip.model.project.selection.blade.FunctionalSelection;
 import at.tuwien.prip.model.project.selection.blade.PDFInstruction;
+import at.tuwien.prip.model.project.selection.blade.RecordSelection;
 import at.tuwien.prip.model.project.selection.blade.RegionSelection;
 import at.tuwien.prip.model.project.selection.blade.SectionSelection;
-import at.tuwien.prip.model.project.selection.blade.SelectionContainer;
 import at.tuwien.prip.model.project.selection.blade.SemanticSelection;
 import at.tuwien.prip.model.project.selection.blade.TableCell;
 import at.tuwien.prip.model.project.selection.blade.TableSelection;
@@ -634,7 +632,8 @@ public class DiademBenchmarkEngine {
 				"TABLE", 
 				"FUNCTIONAL",
 				"FIGURE",
-		"LIST"};
+				"LIST"};
+		
 		for (String parseName : parseNames)
 		{
 			List<Element> parseElems = DOMHelper.Tree.Children
@@ -645,7 +644,15 @@ public class DiademBenchmarkEngine {
 				selections.add(section);
 			}
 		}
-
+		
+		//parse containers (records)
+		List<Element> selectionElems = DOMHelper.Tree.Children
+				.getNamedChildElements(root, "container");
+		for (Element selectionE : selectionElems) {
+			RecordSelection record = parseContainerElement(selectionE);
+			selections.add(record);
+		}
+		
 		result.getItems().addAll(selections);
 		return result;
 	}
@@ -989,6 +996,25 @@ public class DiademBenchmarkEngine {
 	//	}
 
 	/**
+	 * Parse a container (record) selection.
+	 * @param element
+	 * @return
+	 */
+	public static RecordSelection parseContainerElement(Element element)
+	{
+		Document doc = element.getOwnerDocument();
+		RecordSelection result = new RecordSelection();
+		List<Element> nodeElems = DOMHelper.Tree.Children
+				.getNamedChildElements(element, "node");
+		for (Element node : nodeElems)
+		{
+			NodeSelection nodeSelection = new NodeSelection(node, doc);
+			result.getSelections().add(nodeSelection);
+		}
+		return result;
+	}
+	
+	/**
 	 * Parse a table element.
 	 * @param element
 	 * @return
@@ -1112,9 +1138,9 @@ public class DiademBenchmarkEngine {
 						out.write(singlePageSelection((SinglePageSelection) item, TAB));
 					}
 					//CASE 5: selection container
-					else if (item instanceof SelectionContainer)
+					else if (item instanceof RecordSelection)
 					{
-						SelectionContainer container = (SelectionContainer) item;
+						RecordSelection container = (RecordSelection) item;
 						out.write(containerSelection(container, TAB));
 					}
 				}
@@ -1304,7 +1330,7 @@ public class DiademBenchmarkEngine {
 	 * @param indent
 	 * @return
 	 */
-	private static String containerSelection(SelectionContainer container, String indent)
+	private static String containerSelection(RecordSelection container, String indent)
 	{
 		StringBuffer sb = new StringBuffer();
 		sb.append(indent + "<container id='"
