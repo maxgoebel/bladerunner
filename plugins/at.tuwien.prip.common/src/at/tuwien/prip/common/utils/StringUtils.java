@@ -163,6 +163,9 @@ public class StringUtils {
      * @return
      */
     public static String trimTo(String str, int size) {
+    	if (str.length()<=size)
+    		return str;
+    	
     	int presuf = (size-3)/2 +1;
     	StringBuilder builder = new StringBuilder();
     	builder.append(str.substring(0, presuf));
