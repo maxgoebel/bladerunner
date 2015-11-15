@@ -81,6 +81,13 @@
                   tooltip="Open a file">
             </command>
             <command
+                  commandId="at.tuwien.prip.docwrap.annotator.openUrlCommand"
+                  icon="icons/annotator/obj16/document.gif"
+                  label="Open URL"
+                  style="push"
+                  tooltip="Open with URL">
+            </command>
+            <command
                   commandId="at.tuwien.prip.docwrap.annotator.loadBenchmark"
                   icon="icons/eclipseUI/obj16/file_obj.gif"
                   label="Open ZIP"
@@ -133,7 +140,7 @@
             name="Benchmark Editor">
       </editor>
       <editor
-            class="at.tuwien.dbai.bladeRunner.editors.annotator.WeblearnEditor"
+            class="at.tuwien.dbai.bladeRunner.editors.html.WeblearnEditor"
             default="false"
             id="at.tuwien.prip.bladeRunner.editors.weblearnEditor"
             name="HTML Editor">
@@ -186,6 +193,12 @@
             defaultHandler="at.tuwien.dbai.bladeRunner.commands.CreateReportCommand"
             id="at.tuwien.dbai.annotator.createReport"
             name="Create Report">
+      </command>
+      <command
+            defaultHandler="at.tuwien.dbai.bladeRunner.commands.URLOpen"
+            description="Open a URL"
+            id="at.tuwien.prip.docwrap.annotator.openUrlCommand"
+            name="Open URL Command">
       </command>
    </extension>
    <extension
@@ -285,7 +298,7 @@
          id="annotationProduct"
          point="org.eclipse.core.runtime.products">
       <product
-            application="at.tuwien.dbai.annotator.application"
+            application="at.tuwien.dbai.bladeRunner.application"
             name="Annotator">
          <property
                name="appName"
