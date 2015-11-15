@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import at.tuwien.dbai.bladeRunner.Activator;
-import at.tuwien.dbai.bladeRunner.editors.annotator.ProcessDocumentJob;
+import at.tuwien.dbai.bladeRunner.utils.ProcessDocumentJob;
 import at.tuwien.dbai.bladeRunner.utils.benchmark.DiademBenchmarkEngine;
 import at.tuwien.prip.model.project.annotation.Annotation;
 import at.tuwien.prip.model.project.document.benchmark.Benchmark;

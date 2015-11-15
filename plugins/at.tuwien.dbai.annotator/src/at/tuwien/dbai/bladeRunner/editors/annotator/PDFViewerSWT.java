@@ -63,6 +63,8 @@ import at.tuwien.dbai.bladeRunner.control.IDocumentUpdateListener;
 import at.tuwien.dbai.bladeRunner.control.DocumentUpdate.UpdateType;
 import at.tuwien.dbai.bladeRunner.editors.AnnotatorEditor;
 import at.tuwien.dbai.bladeRunner.utils.PDFUtils;
+import at.tuwien.dbai.bladeRunner.utils.SWT2Dutil;
+import at.tuwien.dbai.bladeRunner.utils.SWTImageCanvas;
 import at.tuwien.dbai.bladeRunner.views.IPlotMouseListener;
 import at.tuwien.prip.model.project.document.DocumentFormat;
 import at.tuwien.prip.model.project.document.DocumentModel;

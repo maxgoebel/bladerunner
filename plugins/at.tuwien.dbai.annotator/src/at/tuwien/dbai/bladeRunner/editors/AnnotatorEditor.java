@@ -46,8 +46,8 @@ import at.tuwien.dbai.bladeRunner.control.SelectionController;
 import at.tuwien.dbai.bladeRunner.control.DocumentUpdate.UpdateType;
 import at.tuwien.dbai.bladeRunner.editors.annotator.DocWrapEditor;
 import at.tuwien.dbai.bladeRunner.editors.annotator.PDFViewerSWT;
-import at.tuwien.dbai.bladeRunner.editors.annotator.WeblearnEditor;
 import at.tuwien.dbai.bladeRunner.editors.base.BaseEditor;
+import at.tuwien.dbai.bladeRunner.editors.html.WeblearnEditor;
 import at.tuwien.dbai.bladeRunner.views.BenchmarkEditorInput;
 import at.tuwien.dbai.bladeRunner.views.SelectionImageView;
 import at.tuwien.dbai.bladeRunner.views.bench.BenchmarkNavigatorView;
@@ -401,6 +401,10 @@ ISelectionChangedListener
 
 	public DocWrapEditor getGraphEditor() {
 		return annoEditor;
+	}
+	
+	public WeblearnEditor getHtmlEditor() {
+		return webEditor;
 	}
 
 	public void registerForSelection(ISelectionChangedListener listener) {

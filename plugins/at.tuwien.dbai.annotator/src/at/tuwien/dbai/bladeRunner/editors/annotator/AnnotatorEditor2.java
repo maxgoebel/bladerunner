@@ -82,6 +82,7 @@ import at.tuwien.dbai.bladeRunner.preferences.PreferenceConstants;
 import at.tuwien.dbai.bladeRunner.utils.DocWrapConstants;
 import at.tuwien.dbai.bladeRunner.utils.DocumentGraphFactory;
 import at.tuwien.dbai.bladeRunner.utils.PDFUtils;
+import at.tuwien.dbai.bladeRunner.utils.SWT2Dutil;
 import at.tuwien.dbai.bladeRunner.views.IPlotMouseListener;
 import at.tuwien.prip.common.datastructures.HashMap2;
 import at.tuwien.prip.common.datastructures.Map2;
